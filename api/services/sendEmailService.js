@@ -113,7 +113,7 @@ module.exports.sendInvitationMailToUser = async function (emailTo, username, com
   const mailOptions = {
     from: `support 👻 <${config.mailing.from}>`, // sender address
     to: emailTo, // list of receivers
-    subject: `${companyName} has invited you to UCX ZONE`, // Subject line
+    subject: `${companyName} has invited you to buses trips`, // Subject line
     html: htmlToSend // html body
   };
 

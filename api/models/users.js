@@ -40,6 +40,11 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
       defaultValue: '0'
     },
+    status: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
+      defaultValue: 5
+    },
     secret: {
       type: DataTypes.STRING(255),
       allowNull: false

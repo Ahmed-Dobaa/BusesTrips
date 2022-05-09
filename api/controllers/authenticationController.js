@@ -43,7 +43,7 @@ module.exports = {
       const privateAttributes = ['password', 'activationToken', 'secret', 'country'];
 
       createdUser = _.omit(createdUser.dataValues, privateAttributes);
-      // await Mailer.sendUserActivationMail(request.payload.email, activationToken);
+      await Mailer.sendUserActivationMail(request.payload.email, activationToken);
       await transaction.commit();
       return responseService.OK(reply, { value: createdUser, message: `User registered successfully` });
     }
@@ -157,19 +157,14 @@ module.exports = {
       if(!_.isEmpty(foundUser)) {
 
         const forgetToken = jwtService.generateUserAccessToken({ id: foundUser.id, email: foundUser.email }, foundUser.secret);
-        await models.userForgetPassword.upsert({ userId: foundUser.id, forgetToken: forgetToken, createdAt: moment().format('YYYY-MM-DD hh:mm:ss'), revoked: '0' }, { transaction });
         await Mailer.sendUserforgetPasswordMail(payload.email, forgetToken);
         await transaction.commit();
-        return reply.response({"status": 200, "message": "Please, check your email"}).code(200);
+        return responseService.OK(reply, { value: foundUser, message: 'Please, check your email' });
       }
       await transaction.rollback();
-    return reply.response({"status": 406,"message": "This email is not exist"}).code(406);
-
-
+      return Boom.notAcceptable('This email is not exist');
     }
     catch (e) {
-      console.log('error', e);
-
       if(transaction) {
         transaction.rollback();
       }
@@ -181,83 +176,22 @@ module.exports = {
     try {
       transaction = await models.sequelize.transaction();
     const user =  await models.users.findOne({ where : {secret: request.payload.secret_code }});
+
     if(user){
-      const _password = bcrypt.hashSync(request.payload.password, bcrypt.genSaltSync(10));
-      await models.users.update({password: _password}, { where : {secret: request.payload.secret_code }, transaction});
+      const newPassword = bcrypt.hashSync(request.payload.password, bcrypt.genSaltSync(10));
+      await models.users.update({password: newPassword}, { where : {secret: request.payload.secret_code }, transaction});
       await transaction.commit();
-      return reply.response({status: 200, message: "Password updated successfully"}).code(200);
+      return responseService.OK(reply, { value: user, message: 'Password reset successfully' });
     }
       await transaction.rollback();
-      return reply.response({status: 406, message: "This secret code is invalid"}).code(406);
+      return Boom.notAcceptable(`This secret code is invalid`);
 
     } catch (error) {
 
-    }
-  },
-  changePassword: async function (request, reply) {
-    let transaction = null;
-    try {
-
-      transaction = await models.sequelize.transaction();
-      await models.users.update({ password: request.payload.password }, { where: { id: request.auth.decoded.id }, transaction });
-      await models.userForgetPassword.destroy({ where: { userId: request.auth.decoded.id }, transaction });
-
-      if(request.payload.logout) {
-
-        await models.user_device_token.destroy({ where: { userId: request.auth.decoded.id }, transaction });
-      }
-      await transaction.commit();
-      await Mailer.sendPasswordChangedMail(request.auth.decoded.email);
-
-
-      return reply.response().code(204);
-    }
-    catch (e) {
-      console.log('error', e);
-
-      if(transaction) {
+      if(transaction){
         await transaction.rollback();
+        return Boom.InternalServerError(`An Error Occured`);
       }
-      throw Boom.notImplemented(e);
     }
   },
-  logout: async function (request, reply) {
-    try {
-
-      await userService.logout(request.payload.accessToken);
-
-      return reply.response().code(204);
-    }
-    catch (e) {
-      console.log('error', e);
-      throw Boom.notImplemented(e);
-    }
-  },
-  resentActivationMail: async function (request, reply) {
-    try {
-
-      const foundUser = await models.users.findOne({ where: { email: request.payload.email }, raw: true });
-
-      if(_.isEmpty(foundUser)) {
-        return reply.response({"status": 406,"message": "This email is not exist"}).code(406);
-        // return Boom.unauthorized('This User Not Exist');
-      }
-
-      if(! foundUser.activationToken && foundUser.active === 1) {
-        return reply.response({"status": 406,"message": "This account activated before"}).code(406);
-        // return Boom.unauthorized('This account activated before');
-      }
-      const validToken = userService.generateActivationToken();
-      await models.users.update({ activationToken: validToken }, { where: { id: foundUser.id } });
-
-      Mailer.sendUserActivationMail(request.payload.email, validToken);
-
-      return reply.response({"status": 200, "message": "Activation code sent, please check your email"}).code(200);
-    }
-    catch (e) {
-      console.log('error', e);
-
-      return errorService.wrapError(e);
-    }
-  }
 };

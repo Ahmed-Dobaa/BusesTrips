@@ -108,11 +108,11 @@ module.exports = {
     host: 'smtp.gmail.com',
     port: 465, // 587
     secure: true, // true for 465, false for other ports
-    from: 'UCX Zone',
+    from: 'Buses Trips',
     subjects: { activationMail: 'Activation Mail' },
     auth: {
-      user: 'ucx.zone6@gmail.com', // generated ethereal user
-      pass: 'Ahmedmob@UCX6000' // generated ethereal password
+      user: 'buses.trips@gmail.com', // generated ethereal user
+      pass: 'buses@12345' // generated ethereal password
     }
   },
 };
