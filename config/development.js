@@ -76,8 +76,8 @@ WfZNb6g2ntueaq/q+YskRdR5XlkDTvUFgkT0nRDEbN1TaLBJXxcpq8YZ
     abortEarly: false
   },
   database: {
-    database: 'allenap_bus', //'sql5490974',
-    username: 'allenap_bus', //'sql5490974',
+    database: 'allenap_bus', //'sql5490974', //
+    username: 'allenap_bus', //'sql5490974', //
     password: 'x7bw4ROf9dUT', //8pjHfFzZEY',
     host: 'localhost', //sql5.freemysqlhosting.net',
     port: 3306,

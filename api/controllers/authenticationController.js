@@ -16,7 +16,8 @@ const models = require(path.join(__dirname, '../models/index'));
 const errorService = require(path.join(__dirname, '../services/errorService'));
 const responseService = require(path.join(__dirname, '../services/responseService'));
 const _enum = require(path.join(__dirname, '../services/enum'));
-
+const leftMenuService = require(path.join(__dirname, '../services/leftMenuService'));
+const permissionsController = require('./permissionsController');
 
 module.exports = {
   registerAdmin: async (request, reply) => {
@@ -78,6 +79,9 @@ module.exports = {
 
       const { payload } = request;
       const foundUser = await models.users.findOne({ where: { email: payload.email } });
+      const leftMenu = await leftMenuService.leftMenu(foundUser);
+      const userURLs = await permissionsController.getUserScreenToAccess(foundUser);
+      const actions = await permissionsController.getUserActionsInPage(foundUser);
 
       if(_.isEmpty(foundUser) || !foundUser.validPassword(payload.password)) {
         return Boom.unauthorized('Wrong Email Or Password')
@@ -119,7 +123,9 @@ module.exports = {
             active: foundUser.active
           }, foundUser.secret, payload.stayLoggedIn, agent.toJSON());
           // await userService.saveAccessToken(foundUser.id, accessToken, accessToken, agent.toJSON());
-          return reply.response({status: 200, accessToken: accessToken, user_info: foundUser, message: "Login successfully" }).header('Authorization', accessToken);
+          return reply.response({status: 200, accessToken: accessToken,
+            accessToken: accessToken, leftMenu: leftMenu, urls: userURLs,
+            actions: actions, message: "Login successfully" }).header('Authorization', accessToken);
         }
       }
 
@@ -140,7 +146,9 @@ module.exports = {
       }, foundUser.secret, payload.stayLoggedIn, agent.toJSON());
       // await userService.saveAccessToken(foundUser.id, accessToken, accessToken, agent.toJSON());
 
-      return reply.response({status: 200, accessToken: accessToken, user_info: foundUser, message: "Login successfully" }).header('Authorization', accessToken);
+      return reply.response({status: 200, accessToken: accessToken,
+        accessToken: accessToken, leftMenu: leftMenu, urls: userURLs,
+        actions: actions, message: "Login successfully" }).header('Authorization', accessToken);
     }
     catch (e) {
       console.log('Error', e);
