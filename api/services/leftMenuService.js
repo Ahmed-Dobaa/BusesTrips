@@ -9,12 +9,8 @@ module.exports = {
       let menu = [];
       let users = [];
       let management = [];
-      let tasks = [];
-      let projects = [];
-      let categories = [];
-      let surveies = [];
       let customers = [];
-      let uplodedTasks = [];
+
 
       const mainScreens = await models.main_screens.findAll();
       const leftMenu = await models.sequelize.query(`SELECT r.id, permissionId, permissionName, lookupDetailName as permissionTypeName, permissionType,
@@ -54,35 +50,7 @@ module.exports = {
                 })
           }
 
-          if(leftMenu[i].relatedTo === 4){
-            tasks.push({
-              name: leftMenu[i].permissionName,
-              icon: leftMenu[i].icon,
-              url: leftMenu[i].url
-            })
-          }
 
-          if(leftMenu[i].relatedTo === 5){
-            projects.push({
-              name: leftMenu[i].permissionName,
-              icon: leftMenu[i].icon,
-              url: leftMenu[i].url
-            })
-          }
-          if(leftMenu[i].relatedTo === 6){
-              categories.push({
-                name: leftMenu[i].permissionName,
-                icon: leftMenu[i].icon,
-                url: leftMenu[i].url
-            })
-          }
-          if(leftMenu[i].relatedTo === 7){
-            surveies.push({
-              name: leftMenu[i].permissionName,
-              icon: leftMenu[i].icon,
-              url: leftMenu[i].url
-          })
-        }
         if(leftMenu[i].relatedTo === 8){
           customers.push({
             name: leftMenu[i].permissionName,
@@ -90,13 +58,6 @@ module.exports = {
             url: leftMenu[i].url
         })
        }
-       if(leftMenu[i].relatedTo === 9){
-        uplodedTasks.push({
-          name: leftMenu[i].permissionName,
-          icon: leftMenu[i].icon,
-          url: leftMenu[i].url
-      })
-     }
 
 
       }
@@ -116,53 +77,11 @@ module.exports = {
           children: management
         })
       }
-
-
-      if(tasks.length != 0){
-        menu.push({
-          name: 'Tasks',
-          icon: mainScreens[3].mainScreenIcon,
-          children: tasks
-        })
-      }
-
-      if(projects.length != 0){
-        menu.push({
-          name: mainScreens[4].mainTitleName,
-          icon: mainScreens[4].mainScreenIcon,
-          children: projects
-        })
-      }
-
-      if(categories.length != 0){
-        menu.push({
-          name: mainScreens[5].mainTitleName,
-          icon: mainScreens[5].mainScreenIcon,
-          children: categories
-        })
-      }
-
-      if(surveies.length != 0){
-        menu.push({
-          name: mainScreens[6].mainTitleName,
-          icon: mainScreens[6].mainScreenIcon,
-          children: surveies
-        })
-      }
-
       if(customers.length != 0){
         menu.push({
-          name: mainScreens[7].mainTitleName,
-          icon: mainScreens[7].mainScreenIcon,
+          name: mainScreens[3].mainTitleName,
+          icon: mainScreens[3].mainScreenIcon,
           children: customers
-        })
-      }
-
-      if(uplodedTasks.length != 0){
-        menu.push({
-          name: mainScreens[8].mainTitleName,
-          icon: mainScreens[8].mainScreenIcon,
-          children: uplodedTasks
         })
       }
 
