@@ -23,6 +23,7 @@ module.exports = {
   registerAdmin: async (request, reply) => {
     let transaction;
     try {
+      let company = null;
       transaction = await models.sequelize.transaction();
       const { payload } = request;
       const foundUser = await models.users.findOne({ where: { email: request.payload.email }, raw: true });
@@ -38,9 +39,11 @@ module.exports = {
       if(payload['role']){
         payload.status = _enum.APPROVED;
       }else{
+        company = await models.companies.create(request.payload, {transaction})
         payload['role'] = _enum.COMPANY;
+        payload['companyId'] = company.id;
       }
-      let createdUser = await models.users.create(request.payload);
+      let createdUser = await models.users.create(request.payload, {transaction});
       const privateAttributes = ['password', 'activationToken', 'secret', 'country'];
 
       createdUser = _.omit(createdUser.dataValues, privateAttributes);

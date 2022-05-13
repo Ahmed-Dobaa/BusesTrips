@@ -108,7 +108,7 @@ module.exports = [
     method: 'GET',
     options: {
       description: 'get all users',
-      auth: false,
+      auth: 'jwt',
       handler: usersController.getUsers
     }
   },
@@ -119,7 +119,7 @@ module.exports = [
       payload: { allow: ['application/json'], },
       description: 'update user status',
       validate: userSchema.updateUserStatus,
-      auth: false,
+      auth: 'jwt',
       handler: usersController.updateUserStatus
     }
   },
@@ -130,7 +130,7 @@ module.exports = [
       payload: { allow: ['application/json'], },
       description: 'update user role',
       validate: userSchema.updateUserRole,
-      auth: false,
+      auth: 'jwt',
       handler: usersController.updateUserRole
     }
   },
@@ -139,7 +139,7 @@ module.exports = [
     method: 'DELETE',
     options: {
       description: 'delete user',
-      auth: false,
+      auth: 'jwt',
       handler: usersController.deleteUser
     }
   },
@@ -150,7 +150,7 @@ module.exports = [
       payload: { allow: ['application/json'], },
       description: 'update user',
       validate: userSchema.updateUser,
-      auth: false,
+      auth: 'jwt',
       handler: usersController.updateUser
     }
   },
@@ -161,7 +161,7 @@ module.exports = [
       payload: { allow: ['application/json'], },
       description: 'create a new role',
       validate: rolesSchema.createRoleAndItsPermissions,
-      auth: false,
+      auth: 'jwt',
       handler: rolesController.createRoleAndItsPermissions
     }
   },
@@ -170,7 +170,7 @@ module.exports = [
     method: 'GET',
     options: {
       description: 'get all system roles',
-      auth: false,
+      auth: 'jwt',
       handler: rolesController.getRoles
     }
   },
@@ -179,7 +179,7 @@ module.exports = [
     method: 'DELETE',
     options: {
       description: 'delete a specific role',
-      auth: false,
+      auth: 'jwt',
       handler: rolesController.deleteRole
     }
   },
@@ -190,7 +190,7 @@ module.exports = [
       payload: { allow: ['application/json'], },
       description: 'update an existed role',
       // validate: rolesSchema.updateRoleAndItsPermission,
-      auth: false,
+      auth: 'jwt',
       handler: rolesController.updateRoleAndItsPermission
     }
   },
@@ -199,7 +199,7 @@ module.exports = [
     method: 'GET',
     options: {
       description: 'get all system permissions',
-      auth: false,
+      auth: 'jwt',
       handler: permissionsController.getPermissions
     }
   },
@@ -208,7 +208,7 @@ module.exports = [
     method: 'DELETE',
     options: {
       description: 'delete a specific permission',
-      auth: false,
+      auth: 'jwt',
       handler: permissionsController.deletePermission
     }
   },
@@ -219,7 +219,7 @@ module.exports = [
       payload: { allow: ['application/json'], },
       description: 'get buttons of the screen',
       validate: permissionsSchema.getButtonsBasedScreen,
-      auth: false,
+      auth: 'jwt',
       handler: permissionsController.screenActions
     }
   },
@@ -230,7 +230,7 @@ module.exports = [
       payload: { allow: ['application/json'], },
       description: 'Create new permission',
       validate: permissionsSchema.createPermission,
-      auth: false,
+      auth: 'jwt',
       handler: permissionsController.createPermission
     }
   },
@@ -239,7 +239,7 @@ module.exports = [
     method: 'GET',
     options: {
       description: 'Get all customers',
-      auth: false,
+      auth: 'jwt',
       handler: customerController.getAllCustomers
     }
   },
