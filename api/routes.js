@@ -7,10 +7,15 @@ const authenticationController = require('./controllers/authenticationController
 const usersController = require('./controllers/userController');
 const rolesController = require('./controllers/rolesController');
 const permissionsController = require('./controllers/permissionsController');
+const companiesStaffController = require('./controllers/companiesStaffController');
+
+
 /////////////////// *** mobile controller *** ///////////////////////
 const mobileAuthenticationController = require('./controllers/mobile/authenticationController');
 const userSettingsController = require('./controllers/mobile/userSettingsController');
 const customerController = require('./controllers/mobile/customersController');
+
+
 
 ///////////// web schema
 const registrationSchema = require('./schemas/registration.js');
@@ -241,6 +246,34 @@ module.exports = [
       description: 'Get all customers',
       auth: false,
       handler: customerController.getAllCustomers
+    }
+  },
+  {
+    path: '/web/createStaff',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new staff',
+      auth: false,
+      handler: companiesStaffController.createStaff
+    }
+  },
+  {
+    path: '/web/companyStaff/{companyId}',
+    method: 'GET',
+    options: {
+      description: 'Get all company staff',
+      auth: false,
+      handler: companiesStaffController.getCompanyStaff
+    }
+  },
+  {
+    path: '/web/staff/{id}',
+    method: 'DELETE',
+    options: {
+      description: 'delete a specific one from staff',
+      auth: false,
+      handler: companiesStaffController.deleteOneStaff
     }
   },
 
