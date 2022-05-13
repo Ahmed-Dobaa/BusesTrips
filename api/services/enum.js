@@ -4,6 +4,7 @@ module.exports = {
     /// roles
     ADMIN: 2,
     COMPANY: 3,
+
     /// permissions type
     SCREEN: 1,
     BUTTON: 2,
@@ -16,5 +17,12 @@ module.exports = {
     APPROVED: 3,
     REJECTED: 4,
     PENDING: 5,
+
+    // currency settings
+    EGY: 14,
+
+    // language settings
+    AR: 35,
+    EN: 36
 
 }

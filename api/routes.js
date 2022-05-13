@@ -7,6 +7,10 @@ const authenticationController = require('./controllers/authenticationController
 const usersController = require('./controllers/userController');
 const rolesController = require('./controllers/rolesController');
 const permissionsController = require('./controllers/permissionsController');
+/////////////////// *** mobile controller *** ///////////////////////
+const mobileAuthenticationController = require('./controllers/mobile/authenticationController');
+const userSettingsController = require('./controllers/mobile/userSettingsController');
+const customerController = require('./controllers/mobile/customersController');
 
 ///////////// web schema
 const registrationSchema = require('./schemas/registration.js');
@@ -14,6 +18,11 @@ const loginSchema = require('./schemas/login.js');
 const userSchema = require('./schemas/user.js');
 const rolesSchema = require('./schemas/roles');
 const permissionsSchema = require('./schemas/permission');
+/////////////// mobile schema
+const mobileRegistrationSchema = require('./schemas/mobile/registration');
+const mobileLoginSchema = require('./schemas/mobile/login');
+const customerSchema = require('./schemas/mobile/customer');
+const usersSettingsSchema = require('./schemas/mobile/usersSettings');
 
 module.exports = [
   {
@@ -32,15 +41,6 @@ module.exports = [
   },
   {
     path: '/web/getLookupDetailBasedMaster/{masterId}',
-    method: 'GET',
-    options: {
-      description: 'getLookupDetailBasedMaster',
-      auth: false,
-      handler: lookupDetailsController.getLookupDetailBasedMaster
-    }
-  },
-  {
-    path: '/mob/getLookupDetailBasedMaster/{masterId}',
     method: 'GET',
     options: {
       description: 'getLookupDetailBasedMaster',
@@ -232,6 +232,105 @@ module.exports = [
       validate: permissionsSchema.createPermission,
       auth: false,
       handler: permissionsController.createPermission
+    }
+  },
+  {
+    path: '/web/getAllCustomers',
+    method: 'GET',
+    options: {
+      description: 'Get all customers',
+      auth: false,
+      handler: customerController.getAllCustomers
+    }
+  },
+
+
+
+  //////////////////****************************////////////////////
+  ///////********** MOBILE APIs **************************/
+  {
+    path: '/mob/getLookupDetailBasedMaster/{masterId}',
+    method: 'GET',
+    options: {
+      description: 'getLookupDetailBasedMaster',
+      auth: false,
+      handler: lookupDetailsController.getLookupDetailBasedMaster
+    }
+  },
+  {
+    path: '/mob/signUp',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'] },
+      plugins: { 'hapi-geo-locate': { enabled: true, fakeIP: '41.46.64.133' } },
+      description: 'register new customer',
+      auth: false,
+      validate: mobileRegistrationSchema,
+      handler: mobileAuthenticationController.signUp
+   }
+  },
+  {
+    path: '/mob/signIn',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'login',
+      validate: mobileLoginSchema,
+      auth: false,
+      handler: mobileAuthenticationController.signIn
+    }
+  },
+  {
+    path: '/mob/activateUser',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'activate customer account using code from email',
+      validate: customerSchema.activeCustomer,
+      auth: false,
+      handler: mobileAuthenticationController.activateAccount
+    }
+  },
+  {
+    path: '/mob/forgetPassword',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Send email to reset the password',
+      validate: customerSchema.forgetPassword,
+      auth: false,
+      handler: mobileAuthenticationController.forgetPassword
+    }
+  },
+  {
+    path: '/mob/resetPassword',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Reset password and enter a new one',
+      validate: customerSchema.resetPassword,
+      auth: false,
+      handler: mobileAuthenticationController.resetPassword
+    }
+  },
+  {
+    path: '/mob/userSettings/{customerId}',
+    method: 'GET',
+    options: {
+      description: 'Get user settings',
+      auth: false,
+      handler: userSettingsController.userSettings
+    }
+  },
+  {
+    path: '/mob/userSettings/{customerId}',
+    method: 'PUT',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'update category and its sub categories',
+      validate: usersSettingsSchema.updateUserSettings,
+      auth: false,
+      handler: userSettingsController.updateUserSettings
     }
   },
 ];

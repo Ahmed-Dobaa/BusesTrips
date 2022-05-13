@@ -11,6 +11,12 @@ module.exports = {
 
     return JWT.sign(userData, secretKey, options);
   },
+  generateCustomerAccessToken: function (userData = {}, secretKey , userAgent) {
+    const options = {
+      expiresIn:  config.jwt.TokenTtl,
+    };
+    return JWT.sign(userData, secretKey, options);
+  },
   verifyResetPasswordToken: function (token) {
     return JWT.verify(token, config.jwt.authKey);
   }
