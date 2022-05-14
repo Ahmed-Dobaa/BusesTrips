@@ -8,6 +8,7 @@ const usersController = require('./controllers/userController');
 const rolesController = require('./controllers/rolesController');
 const permissionsController = require('./controllers/permissionsController');
 const companiesStaffController = require('./controllers/companiesStaffController');
+const companyController = require('./controllers/companyController');
 
 
 /////////////////// *** mobile controller *** ///////////////////////
@@ -276,7 +277,15 @@ module.exports = [
       handler: companiesStaffController.deleteOneStaff
     }
   },
-
+  {
+    path: '/web/getCompanies',
+    method: 'GET',
+    options: {
+      description: 'Get all companies',
+      auth: false,
+      handler: companyController.getCompanies
+    }
+  },
 
 
   //////////////////****************************////////////////////

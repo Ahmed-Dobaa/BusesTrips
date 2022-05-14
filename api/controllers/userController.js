@@ -22,7 +22,8 @@ module.exports = {
         (select name from roles l where l.id = role) roleName,
         status, (select lookupDetailName from lookup_details l where l.id = status) statusName
         from users
-        where deletedAt is null`, { type: QueryTypes.SELECT });
+        where deletedAt is null
+        and companyId is null`, { type: QueryTypes.SELECT });
       return responseService.OK(reply, { value: users, message: `All users` });
     } catch (error) {
       return responseService.InternalServerError(reply, error);
