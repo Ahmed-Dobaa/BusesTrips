@@ -41,8 +41,8 @@ module.exports = {
      try {
       companies = await models.sequelize.query(`SELECT id, name, email, phoneNumber,
          (select lookupDetailName from lookup_details l where l.id =
-           (select status from users s where s.companyId = id)) status
-         FROM companies
+           (select status from users s where s.companyId = c.id)) status
+         FROM companies c
          where deletedAt is null `, { type: QueryTypes.SELECT });
 
        return responseService.OK(reply, {value: companies, message: "All companies" });
