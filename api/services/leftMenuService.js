@@ -65,7 +65,7 @@ module.exports = {
       if(users.length != 0){
         menu.push({
           name: 'Users',
-          icon: mainScreens[0].mainScreenIcon,
+          icon: mainScreens[1].mainScreenIcon,
           children: users
         })
       }
