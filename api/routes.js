@@ -24,6 +24,8 @@ const loginSchema = require('./schemas/login.js');
 const userSchema = require('./schemas/user.js');
 const rolesSchema = require('./schemas/roles');
 const permissionsSchema = require('./schemas/permission');
+const companySchema = require('./schemas/company');
+
 /////////////// mobile schema
 const mobileRegistrationSchema = require('./schemas/mobile/registration');
 const mobileLoginSchema = require('./schemas/mobile/login');
@@ -284,6 +286,17 @@ module.exports = [
       description: 'Get all companies',
       auth: false,
       handler: companyController.getCompanies
+    }
+  },
+  {
+    path: '/web/createCompany',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new company',
+      auth: false,
+      validate: companySchema.createCompany,
+      handler: companyController.createCompany
     }
   },
 

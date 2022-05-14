@@ -3,36 +3,61 @@
 const path = require('path');
 const _ = require('lodash');
 const models = require(path.join(__dirname, '../models/index'));
-const errorService = require(path.join(__dirname, '../services/errorService'));
+
+const userService = require(path.join(__dirname, '../services/userService'));
+const Mailer = require(path.join(__dirname, '../services/sendEmailService'));
 const responseService = require(path.join(__dirname, '../services/responseService'));
-const helperService = require(path.join(__dirname, '../services/helperService'));
+const _enum = require(path.join(__dirname, '../services/enum'));
 const { QueryTypes } = require('sequelize');
 const Boom = require('boom');
 
 module.exports = {
 
-  createStaff: async (request, reply) => {
+  createCompany: async (request, reply) => {
     let transaction;
     try {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
-      for(let i = 0; i < payload.length; i++){
-        if(payload[i].id === null){  // create new staff
-         await models.companies_staff.create(payload[i], {transaction});
-       }else{
-         await models.companies_staff.update(payload[i], {where: {id: payload[i].id }}, {transaction});
-       }
+      let createdUser = null;
+      if(request.payload.id === null){
+        const foundUser = await models.users.findOne({ where: { email: request.payload.email }, raw: true });
+
+      if(!_.isEmpty(foundUser)) {
+        await transaction.rollback();
+        return Boom.notAcceptable('This email alreday registered!');
+      }
+      const activationToken = userService.generateActivationToken();
+      payload.activationToken = activationToken;
+      payload.secret = userService.generateActivationToken();
+
+        let company = await models.companies.create(request.payload, {transaction})
+        payload['role'] = _enum.COMPANY;
+        payload['companyId'] = company.id;
+
+         createdUser = await models.users.create(request.payload, {transaction});
+        const privateAttributes = ['password', 'activationToken', 'secret', 'country'];
+
+        createdUser = _.omit(createdUser.dataValues, privateAttributes);
+        await Mailer.sendUserActivationMail(request.payload.email, activationToken);
+      }else{
+
+        payload["companyId"] = request.payload.id;
+        delete payload.id;
+        await models.companies.update(request.payload, {where: {id: request.payload.companyId}}, {transaction});
+         createdUser = await models.users.update({
+           name: payload.name , email: payload.email, phoneNumber: payload.phoneNumber
+         }, {where: {companyId: request.payload.companyId, role: _enum.COMPANY}}, {transaction});
       }
 
       await transaction.commit();
-      return responseService.OK(reply, { value: payload, message: 'Staff updated successfully' });
+      return responseService.OK(reply, { value: createdUser, message: `Company updated successfully` });
     }
     catch (e) {
       if(transaction) {
-        await transaction.rollback();
+      transaction.rollback();
       }
-      return responseService.InternalServerError(reply, e);
-    }
+       throw Boom.notImplemented(e);
+      }
   },
 
   getCompanies: async (request, reply) => {
