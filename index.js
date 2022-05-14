@@ -13,8 +13,7 @@ const server = Hapi.server({
   routes: {
     //cors: 'true',
     cors: {
-      origin: ["*", "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept",
-      "Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT"], // an array of origins or 'ignore'
+      origin: ["*"],
       credentials: true // boolean - 'Access-Control-Allow-Credentials'
      },
     timeout: {
