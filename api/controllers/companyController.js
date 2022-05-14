@@ -39,11 +39,10 @@ module.exports = {
     let language = request.headers.language;
     let companies = null;
      try {
-      companies = await models.sequelize.query(`SELECT id, name, email, phoneNumber,
-         (select lookupDetailName from lookup_details l where l.id =
-           (select status from users s where s.companyId = c.id)) status
-         FROM companies c
-         where deletedAt is null `, { type: QueryTypes.SELECT });
+      companies = await models.sequelize.query(`SELECT c.id, c.name, c.email, c.phoneNumber, s.id userId
+         (select lookupDetailName from lookup_details l where l.id = s.status) status
+         FROM companies c, users s
+         where c.deletedAt is null `, { type: QueryTypes.SELECT });
 
        return responseService.OK(reply, {value: companies, message: "All companies" });
      } catch (e) {
