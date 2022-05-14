@@ -39,8 +39,8 @@ module.exports = {
     let language = request.headers.language;
     let staff = null;
      try {
-         staff = await models.sequelize.query(`SELECT id, name, job as jobId,
-                   (select lookupDetailName from lookup_details l where l.id = job) job, phoneNumber, companyId
+         staff = await models.sequelize.query(`SELECT id, name, job as job,
+                   (select lookupDetailName from lookup_details l where l.id = job) jobName, phoneNumber, companyId
                    FROM companies_staff where companyId = ${request.params.companyId}
                    and deletedAt is null `, { type: QueryTypes.SELECT });
 
