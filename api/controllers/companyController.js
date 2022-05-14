@@ -39,7 +39,7 @@ module.exports = {
     let language = request.headers.language;
     let companies = null;
      try {
-      companies = await models.sequelize.query(`SELECT c.id, c.name, c.email, c.phoneNumber, s.id userId
+      companies = await models.sequelize.query(`SELECT c.id, c.name, c.email, c.phoneNumber, s.id userId,
          (select lookupDetailName from lookup_details l where l.id = s.status) status
          FROM companies c, users s
          where c.deletedAt is null `, { type: QueryTypes.SELECT });
