@@ -39,7 +39,7 @@ module.exports = {
     let language = request.headers.language;
     let companies = null;
      try {
-         staff = await models.sequelize.query(`SELECT id, name, email, phoneNumber,
+      companies = await models.sequelize.query(`SELECT id, name, email, phoneNumber,
          (select lookupDetailName from lookup_details l where l.id =
            (select status from users s where s.companyId = id)) status
          FROM companies
