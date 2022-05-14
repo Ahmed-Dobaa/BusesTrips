@@ -128,7 +128,7 @@ module.exports = {
           const accessToken = jwtService.generateToken(foundUser.id, foundUser.companyId, foundUser.role);
           // await userService.saveAccessToken(foundUser.id, accessToken, accessToken, agent.toJSON());
           return reply.response({status: 200, accessToken: accessToken,
-            accessToken: accessToken, leftMenu: leftMenu, urls: userURLs,
+            accessToken: accessToken, companyId: foundUser.companyId, leftMenu: leftMenu, urls: userURLs,
             actions: actions, message: "Login successfully" }).header('Authorization', accessToken);
         }
       }
@@ -152,7 +152,7 @@ module.exports = {
       // await userService.saveAccessToken(foundUser.id, accessToken, accessToken, agent.toJSON());
 
       return reply.response({status: 200, accessToken: accessToken,
-        accessToken: accessToken, leftMenu: leftMenu, urls: userURLs,
+        accessToken: accessToken, companyId: foundUser.companyId, leftMenu: leftMenu, urls: userURLs,
         actions: actions, message: "Login successfully" }).header('Authorization', accessToken);
     }
     catch (e) {
