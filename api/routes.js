@@ -113,7 +113,7 @@ module.exports = [
     method: 'GET',
     options: {
       description: 'get all users',
-      auth: 'jwt',
+      auth: false,
       handler: usersController.getUsers
     }
   },

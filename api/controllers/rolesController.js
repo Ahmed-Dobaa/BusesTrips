@@ -3,7 +3,6 @@
 const path = require('path');
 const _ = require('lodash');
 const models = require(path.join(__dirname, '../models/index'));
-const jwtService = require(path.join(__dirname, '../services/jwtService'));
 const errorService = require(path.join(__dirname, '../services/errorService'));
 const responseService = require(path.join(__dirname, '../services/responseService'));
 const helperService = require(path.join(__dirname, '../services/helperService'));
@@ -13,10 +12,6 @@ const Boom = require('boom');
 module.exports = {
 
   createRoleAndItsPermissions: async (request, reply) => {
-    const authorization = await jwtService.verifyToken(request);
-       if(authorization === 'Unauthorized'){
-         return Boom.unauthorized('Unauthorized');
-       }
     let language = request.headers.language;
     let transaction;
     let roleId = null;
@@ -87,10 +82,6 @@ module.exports = {
   },
 
   getRoles: async (request, reply) => {
-    const authorization = await jwtService.verifyToken(request);
-       if(authorization === 'Unauthorized'){
-         return Boom.unauthorized('Unauthorized');
-       }
     let language = request.headers.language;
     let permissions = null;
      try {
@@ -114,10 +105,6 @@ module.exports = {
   },
 
   updateRoleAndItsPermission: async (request, reply) => {
-    const authorization = await jwtService.verifyToken(request);
-       if(authorization === 'Unauthorized'){
-         return Boom.unauthorized('Unauthorized');
-       }
     let language = request.headers.language;
     let transaction;
     try {
@@ -145,10 +132,7 @@ module.exports = {
   },
 
   deleteRole: async (request, reply) => {
-    const authorization = await jwtService.verifyToken(request);
-    if(authorization === 'Unauthorized'){
-      return Boom.unauthorized('Unauthorized');
-    }
+
     let language = request.headers.language;
     let transaction;
     const { roleId } = request.params;
