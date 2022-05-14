@@ -119,12 +119,13 @@ module.exports = {
 
           await models.users.update({ twoFactorAuthenticationCode: null }, { where: { id: foundUser.id } });
           const agent = useragent.lookup(request.headers['user-agent']);
-          const accessToken = jwtService.generateUserAccessToken({
-            id: foundUser.id,
-            name: foundUser.name,
-            email: foundUser.email,
-            active: foundUser.active
-          }, foundUser.secret, payload.stayLoggedIn, agent.toJSON());
+          // const accessToken = jwtService.generateUserAccessToken({
+          //   id: foundUser.id,
+          //   name: foundUser.name,
+          //   email: foundUser.email,
+          //   active: foundUser.active
+          // }, foundUser.secret, payload.stayLoggedIn, agent.toJSON());
+          const accessToken = jwtService.generateToken(foundUser.id, foundUser.companyId, foundUser.role);
           // await userService.saveAccessToken(foundUser.id, accessToken, accessToken, agent.toJSON());
           return reply.response({status: 200, accessToken: accessToken,
             accessToken: accessToken, leftMenu: leftMenu, urls: userURLs,
@@ -141,12 +142,13 @@ module.exports = {
       }
 
       const agent = useragent.lookup(request.headers['user-agent']);
-      const accessToken = jwtService.generateUserAccessToken({
-        id: foundUser.id,
-        name: foundUser.name,
-        email: foundUser.email,
-        active: foundUser.active
-      }, foundUser.secret, payload.stayLoggedIn, agent.toJSON());
+      // const accessToken = jwtService.generateUserAccessToken({
+      //   id: foundUser.id,
+      //   name: foundUser.name,
+      //   email: foundUser.email,
+      //   active: foundUser.active
+      // }, foundUser.secret, payload.stayLoggedIn, agent.toJSON());
+      const accessToken = jwtService.generateToken(foundUser.id, foundUser.companyId, foundUser.role);
       // await userService.saveAccessToken(foundUser.id, accessToken, accessToken, agent.toJSON());
 
       return reply.response({status: 200, accessToken: accessToken,
