@@ -17,10 +17,6 @@ const { QueryTypes } = require('sequelize');
 
 module.exports = {
   getUsers: async function (request, reply) {
-       const authorization = await jwtService.verifyToken(request);
-       if(authorization === 'Unauthorized'){
-         return Boom.unauthorized('Unauthorized');
-       }
     let language = request.headers.language;
     try {
         const users = await models.sequelize.query(`select id, name, email, phoneNumber, role,
