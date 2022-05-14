@@ -11,11 +11,7 @@ const loadPlugins = require('./lib/loadPlugins.js');
 
 const server = Hapi.server({
   routes: {
-    //cors: 'true',
-    cors: {
-      origin: ["*"],
-      credentials: true // boolean - 'Access-Control-Allow-Credentials'
-     },
+    cors: 'true',
     timeout: {
       socket: false,
       server: false
