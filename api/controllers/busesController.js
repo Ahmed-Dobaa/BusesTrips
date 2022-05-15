@@ -57,7 +57,7 @@ module.exports = {
                             busPlateNumber, driverId,
                             (select name from companies_staff s where s.id = driverId) driverName,
                             supervisorId,
-                            (select name from companies_staff s where s.id = driverId) supervisorName,
+                            (select name from companies_staff s where s.id = supervisorId) supervisorName,
                             busSeatsNumber, companyId
                             FROM buses
                             where companyId = ${request.params.companyId}
