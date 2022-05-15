@@ -76,17 +76,18 @@ module.exports = {
      }
   },
 
-  deleteOneStaff: async (request, reply) => {
+  deleteCompany: async (request, reply) => {
 
     let language = request.headers.language;
     let transaction;
     try {
       transaction = await models.sequelize.transaction();
 
-        const deletedStaff = await models.companies_staff.destroy({where: {id: request.params.id }});
+        const deletedCompany = await models.companies.destroy({where: {id: request.params.id }});
+        await models.users.destroy({where: {companyId: request.params.id }});
 
         await transaction.commit();
-        return responseService.OK(reply, {value: deletedStaff, message: 'This employee deleted successfully' });
+        return responseService.OK(reply, {value: deletedCompany, message: 'This company deleted successfully' });
 
       } catch (error) {
         if(transaction) {

@@ -9,6 +9,7 @@ const rolesController = require('./controllers/rolesController');
 const permissionsController = require('./controllers/permissionsController');
 const companiesStaffController = require('./controllers/companiesStaffController');
 const companyController = require('./controllers/companyController');
+const busesController = require('./controllers/busesController');
 
 
 /////////////////// *** mobile controller *** ///////////////////////
@@ -297,6 +298,44 @@ module.exports = [
       auth: false,
       validate: companySchema.createCompany,
       handler: companyController.createCompany
+    }
+  },
+  {
+    path: '/web/deleteCompany/{id}',
+    method: 'DELETE',
+    options: {
+      description: 'delete company',
+      auth: false,
+      handler: companyController.deleteCompany
+    }
+  },
+  {
+    path: '/web/createBuses',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new buses',
+      auth: false,
+      // validate: companySchema.createCompany,
+      handler: busesController.createBuses
+    }
+  },
+  {
+    path: '/web/getBuses/{companyId}',
+    method: 'GET',
+    options: {
+      description: 'Get all company buses',
+      auth: false,
+      handler: busesController.getBuses
+    }
+  },
+  {
+    path: '/web/deleteBus/{id}',
+    method: 'DELETE',
+    options: {
+      description: 'delete bus',
+      auth: false,
+      handler: busesController.deleteBus
     }
   },
 
