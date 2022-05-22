@@ -11,6 +11,7 @@ const companiesStaffController = require('./controllers/companiesStaffController
 const companyController = require('./controllers/companyController');
 const busesController = require('./controllers/busesController');
 const busesRoutesController = require('./controllers/busesLocationsController');
+const tripsController = require('./controllers/trips');
 
 /////////////////// *** mobile controller *** ///////////////////////
 const mobileAuthenticationController = require('./controllers/mobile/authenticationController');
@@ -367,6 +368,37 @@ module.exports = [
       handler: busesRoutesController.deleteBusRoute
     }
   },
+  {
+    path: '/web/createTrip',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new trips',
+      auth: false,
+      // validate: companySchema.createCompany,
+      handler: tripsController.createTrip
+    }
+  },
+  {
+    path: '/web/trips/{companyId}',
+    method: 'GET',
+    options: {
+      description: 'Get all company trips',
+      auth: false,
+      handler: tripsController.getTrips
+    }
+  },
+  {
+    path: '/web/trips/{id}',
+    method: 'DELETE',
+    options: {
+      description: 'delete trip',
+      auth: false,
+      handler: tripsController.deleteTrip
+    }
+  },
+
+
 
   //////////////////****************************////////////////////
   ///////********** MOBILE APIs **************************/
