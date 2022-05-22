@@ -10,7 +10,7 @@ const permissionsController = require('./controllers/permissionsController');
 const companiesStaffController = require('./controllers/companiesStaffController');
 const companyController = require('./controllers/companyController');
 const busesController = require('./controllers/busesController');
-
+const busesRoutesController = require('./controllers/busesLocationsController');
 
 /////////////////// *** mobile controller *** ///////////////////////
 const mobileAuthenticationController = require('./controllers/mobile/authenticationController');
@@ -338,7 +338,35 @@ module.exports = [
       handler: busesController.deleteBus
     }
   },
-
+  {
+    path: '/web/createBusesRoutes',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new buses routes',
+      auth: false,
+      // validate: companySchema.createCompany,
+      handler: busesRoutesController.createBusesRoutes
+    }
+  },
+  {
+    path: '/web/getBusesRoutes/{companyId}',
+    method: 'GET',
+    options: {
+      description: 'Get all company buses routes',
+      auth: false,
+      handler: busesRoutesController.getBusesRoutes
+    }
+  },
+  {
+    path: '/web/deleteBusRoute/{id}',
+    method: 'DELETE',
+    options: {
+      description: 'delete bus route',
+      auth: false,
+      handler: busesRoutesController.deleteBusRoute
+    }
+  },
 
   //////////////////****************************////////////////////
   ///////********** MOBILE APIs **************************/
