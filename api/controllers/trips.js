@@ -17,18 +17,17 @@ module.exports = {
     try {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
-      for(let i = 0; i < payload.length; i++){
-        if("id" in payload[i]){
-          if(payload[i].id === null){  // create new trip
-              await models.trips.create(payload[i], {transaction});
+        if("id" in payload){
+          if(payload.id === null){  // create new trip
+              await models.trips.create(payload, {transaction});
           }else{
-            await models.trips.update(payload[i], {where: {id: payload[i].id }}, {transaction});
+            await models.trips.update(payload, {where: {id: payload.id }}, {transaction});
           }
         }else{
            await transaction.rollback();
            return Boom.notAcceptable("The Id is required");
         }
-      }
+
 
       await transaction.commit();
       return responseService.OK(reply, { value: payload, message: 'Trips updated successfully' });

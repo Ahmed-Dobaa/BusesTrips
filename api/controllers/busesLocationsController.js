@@ -17,20 +17,19 @@ module.exports = {
     try {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
-      for(let i = 0; i < payload.length; i++){
-        if("id" in payload[i]){
+        if("id" in payload){
           console.log("id")
-          if(payload[i].id === null){  // create new bus route
+          if(payload.id === null){  // create new bus route
             console.log("here")
-              await models.buses_locations.create(payload[i], {transaction});
+              await models.buses_locations.create(payload, {transaction});
           }else{
-            await models.buses_locations.update(payload[i], {where: {id: payload[i].id }}, {transaction});
+            await models.buses_locations.update(payload, {where: {id: payload.id }}, {transaction});
           }
         }else{
            await transaction.rollback();
            return Boom.notAcceptable("The Id is required");
         }
-      }
+
 
       await transaction.commit();
       return responseService.OK(reply, { value: payload, message: 'Buses routes updated successfully' });
