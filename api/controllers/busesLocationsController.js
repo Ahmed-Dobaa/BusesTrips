@@ -19,7 +19,9 @@ module.exports = {
       const { payload } = request;
       for(let i = 0; i < payload.length; i++){
         if("id" in payload[i]){
+          console.log("id")
           if(payload[i].id === null){  // create new bus route
+            console.log("here")
               await models.buses_locations.create(payload[i], {transaction});
           }else{
             await models.buses_locations.update(payload[i], {where: {id: payload[i].id }}, {transaction});
@@ -34,6 +36,7 @@ module.exports = {
       return responseService.OK(reply, { value: payload, message: 'Buses routes updated successfully' });
     }
     catch (e) {
+      console.log(e)
       if(transaction) {
         await transaction.rollback();
       }
