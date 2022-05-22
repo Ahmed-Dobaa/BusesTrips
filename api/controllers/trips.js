@@ -53,6 +53,11 @@ module.exports = {
                   and t.companyId = c.id
                   and t.deletedAt is null
                   `, { type: QueryTypes.SELECT });
+
+                  for(let i =0 ; i < locations.length; i++){
+                    let array = locations[i].route.split(",");
+                    locations[i]["route"] = array;
+                  }
        return responseService.OK(reply, {value: locations, message: "Company trips" });
      } catch (e) {
       return responseService.InternalServerError(reply, e);
