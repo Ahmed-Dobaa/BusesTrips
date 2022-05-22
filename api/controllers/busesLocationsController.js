@@ -52,7 +52,10 @@ module.exports = {
       and l.companyId = c.id
       and l.deletedAt is null
       `, { type: QueryTypes.SELECT });
-
+      for(let i =0 ; i < locations.length; i++){
+        let array = locations[i].route.split(",");
+        locations[i]["route"] = array;
+      }
       //await models.buses_locations.findAll({where: {companyId: request.params.companyId}});
        return responseService.OK(reply, {value: locations, message: "Company buses locations" });
      } catch (e) {
