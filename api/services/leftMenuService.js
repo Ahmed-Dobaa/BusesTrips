@@ -13,6 +13,7 @@ module.exports = {
       let companies = [];
       let buses = [];
       let employees = [];
+      let trips = [];
 
 
       const mainScreens = await models.main_screens.findAll();
@@ -85,6 +86,14 @@ module.exports = {
         })
        }
 
+       if(leftMenu[i].relatedTo === 9){
+        trips.push({
+          name: leftMenu[i].permissionName,
+          icon: leftMenu[i].icon,
+          url: leftMenu[i].url
+      })
+     }
+
 
       }
 
@@ -131,6 +140,13 @@ module.exports = {
           name: mainScreens[6].mainTitleName,
           icon: mainScreens[6].mainScreenIcon,
           children: customers
+        })
+      }
+      if(trips.length != 0){
+        menu.push({
+          name: mainScreens[6].mainTitleName,
+          icon: mainScreens[6].mainScreenIcon,
+          children: trips
         })
       }
 
