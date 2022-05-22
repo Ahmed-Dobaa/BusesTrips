@@ -144,7 +144,7 @@ module.exports = {
       }
       if(trips.length != 0){
         menu.push({
-          name: mainScreens[6].mainTitleName,
+          name: mainScreens[7].mainTitleName,
           icon: mainScreens[6].mainScreenIcon,
           children: trips
         })
