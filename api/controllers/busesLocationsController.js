@@ -45,7 +45,15 @@ module.exports = {
     let language = request.headers.language;
     let locations = null;
      try {
-      locations = await models.buses_locations.findAll({where: {companyId: request.params.companyId}});
+      locations = await models.sequelize.query(` SELECT l.id, route, l.companyId, c.name companyName,
+      l.createdAt, l.updatedAt, l.deletedAt
+      FROM buses_locations l, companies c
+      where l.companyId = ${request.params.companyId}
+      and l.companyId = c.id
+      and l.deletedAt is null
+      `, { type: QueryTypes.SELECT });
+
+      //await models.buses_locations.findAll({where: {companyId: request.params.companyId}});
        return responseService.OK(reply, {value: locations, message: "Company buses locations" });
      } catch (e) {
       return responseService.InternalServerError(reply, e);

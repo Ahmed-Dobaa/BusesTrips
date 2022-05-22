@@ -45,12 +45,13 @@ module.exports = {
     let language = request.headers.language;
     let locations = null;
      try {
-      locations = await models.sequelize.query(` SELECT t.id, name, startPoint, endPoint, busId,
-                  busPlateNumber bus, busRouteId, route, t.companyId
-                  FROM trips t, buses b, buses_locations l
+      locations = await models.sequelize.query(` SELECT t.id, t.name, startPoint, endPoint, busId,
+                  busPlateNumber bus, busRouteId, route, t.companyId, c.name companyName
+                  FROM trips t, buses b, buses_locations l, companies c
                   where t.companyId = ${request.params.companyId}
                   and t.busId = b.id
                   and t.busRouteId = l.id
+                  and t.companyId = c.id
                   and t.deletedAt is null
                   `, { type: QueryTypes.SELECT });
        return responseService.OK(reply, {value: locations, message: "Company trips" });
