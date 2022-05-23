@@ -37,6 +37,7 @@ module.exports = {
       return responseService.OK(reply, { value: payload, message: 'Buses updated successfully' });
     }
     catch (e) {
+      console.log(e)
       if(transaction) {
         await transaction.rollback();
       }
