@@ -16,24 +16,22 @@ module.exports = {
     try {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
-      for(let i = 0; i < payload.length; i++){
-        if("id" in payload[i]){
-          if(payload[i].id === null){  // create new bus
-            const plateNumber = await models.buses.findAll({where: {busPlateNumber: payload[i].busPlateNumber}});
+        if("id" in payload){
+          if(payload.id === null){  // create new bus
+            const plateNumber = await models.buses.findAll({where: {busPlateNumber: payload.busPlateNumber}});
             if(_.isEmpty(plateNumber)){
-              await models.buses.create(payload[i], {transaction});
+              await models.buses.create(payload, {transaction});
             }else{
               await transaction.rollback();
-              return Boom.notAcceptable(`This bus plate number '${payload[i].busPlateNumber}' alreadey registered`);
+              return Boom.notAcceptable(`This bus plate number '${payload.busPlateNumber}' alreadey registered`);
             }
           }else{
-            await models.buses.update(payload[i], {where: {id: payload[i].id }}, {transaction});
+            await models.buses.update(payload, {where: {id: payload.id }}, {transaction});
           }
         }else{
            await transaction.rollback();
            return Boom.notAcceptable("The Id is required");
         }
-      }
 
       await transaction.commit();
       return responseService.OK(reply, { value: payload, message: 'Buses updated successfully' });
