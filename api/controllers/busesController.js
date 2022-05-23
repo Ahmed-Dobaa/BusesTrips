@@ -19,6 +19,7 @@ module.exports = {
         if("id" in payload){
           if(payload.id === null){  // create new bus
             console.log(payload.busPlateNumber)
+            console.log(payload)
             let plateNumber = await models.buses.findOne({where: {busPlateNumber: payload.busPlateNumber}});
            console.log(plateNumber)
             if(_.isEmpty(plateNumber)){
