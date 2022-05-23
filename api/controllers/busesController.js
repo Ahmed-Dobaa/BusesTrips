@@ -19,9 +19,12 @@ module.exports = {
         if("id" in payload){
           if(payload.id === null){  // create new bus
             const plateNumber = await models.buses.findAll({where: {busPlateNumber: payload.busPlateNumber}});
+           console.log(plateNumber)
             if(_.isEmpty(plateNumber)){
+              console.log("true")
               await models.buses.create(payload, {transaction});
             }else{
+              console.log("false")
               await transaction.rollback();
               return Boom.notAcceptable(`This bus plate number '${payload.busPlateNumber}' alreadey registered`);
             }
