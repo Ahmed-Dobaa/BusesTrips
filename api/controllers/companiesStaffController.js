@@ -16,13 +16,12 @@ module.exports = {
     try {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
-      for(let i = 0; i < payload.length; i++){
-        if(payload[i].id === null){  // create new staff
-         await models.companies_staff.create(payload[i], {transaction});
+
+        if(payload.id === null){  // create new staff
+         await models.companies_staff.create(payload, {transaction});
        }else{
-         await models.companies_staff.update(payload[i], {where: {id: payload[i].id }}, {transaction});
+         await models.companies_staff.update(payload, {where: {id: payload.id }}, {transaction});
        }
-      }
 
       await transaction.commit();
       return responseService.OK(reply, { value: payload, message: 'Staff updated successfully' });
