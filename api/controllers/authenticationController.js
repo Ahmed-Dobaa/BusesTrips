@@ -82,9 +82,6 @@ module.exports = {
 
       const { payload } = request;
       const foundUser = await models.users.findOne({ where: { email: payload.email } });
-      const leftMenu = await leftMenuService.leftMenu(foundUser);
-      const userURLs = await permissionsController.getUserScreenToAccess(foundUser);
-      const actions = await permissionsController.getUserActionsInPage(foundUser);
 
       if(_.isEmpty(foundUser) || !foundUser.validPassword(payload.password)) {
         return Boom.unauthorized('Wrong Email Or Password')
@@ -103,6 +100,9 @@ module.exports = {
         return Boom.notAcceptable('Your request is still pending');
         // return responseService.NotAllowed(reply, response.message[language]);
       }
+      const leftMenu = await leftMenuService.leftMenu(foundUser);
+      const userURLs = await permissionsController.getUserScreenToAccess(foundUser);
+      const actions = await permissionsController.getUserActionsInPage(foundUser);
 
       if(foundUser.twoFactorAuthentication && request.headers['x-opt']) {
 
