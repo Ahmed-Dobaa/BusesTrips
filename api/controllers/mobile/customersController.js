@@ -58,6 +58,7 @@ module.exports = {
         await Mailer.sendUserActivationMail(request.payload.email, activationToken);
 
       }else{
+        delete request.payload.password;
          createdCustomer = await models.customers.update(request.payload, {where: {id: request.payload.id}}, {transaction});
       }
 
