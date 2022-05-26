@@ -44,7 +44,7 @@ module.exports = {
     let language = request.headers.language;
     let locations = null;
      try {
-      locations = await models.sequelize.query(` SELECT t.id, t.name, startPoint, endPoint, busId,
+      locations = await models.sequelize.query(` SELECT t.id, t.name, startPoint, endPoint, busId, b.seatsStructure, b.busSeatsNumber,
                   busPlateNumber bus, busRouteId, route, t.companyId, c.name companyName
                   FROM trips t, buses b, buses_locations l, companies c
                   where t.companyId = ${request.params.companyId}

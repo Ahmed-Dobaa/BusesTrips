@@ -424,6 +424,27 @@ module.exports = [
    }
   },
   {
+    path: '/web/addCustomer',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'] },
+      plugins: { 'hapi-geo-locate': { enabled: true, fakeIP: '41.46.64.133' } },
+      description: 'register new customer',
+      auth: false,
+      // validate: mobileRegistrationSchema,
+      handler: customerController.addCustomer
+   }
+  },
+  {
+    path: '/web/deleteCustomer/{id}',
+    method: 'DELETE',
+    options: {
+      description: 'delete customer',
+      auth: false,
+      handler: customerController.deleteCustomer
+    }
+  },
+  {
     path: '/mob/signIn',
     method: 'POST',
     options: {
