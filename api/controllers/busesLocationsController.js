@@ -26,6 +26,15 @@ module.exports = {
             }
           }else{
             await models.buses_locations.update(payload, {where: {id: payload.id }}, {transaction});
+            for(let i = 0; i < payload.route.length; i++){
+              if(payload.route[i].id === null){
+                payload.route[i]["bus_location_id"] = payload.id;
+                await models.buses_locations_points.create(payload.route[i], {transaction});
+              }else{
+                await models.buses_locations_points.update(payload.route[i], {where: {id: payload.route[i].id}}, {transaction});
+              }
+
+          }
           }
         }else{
            await transaction.rollback();
