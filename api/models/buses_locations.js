@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
       autoIncrement: true,
       allowNull: false,
     },
-    route: {
+    routeName: {
       type: DataTypes.INTEGER,
       allowNull: false
     },

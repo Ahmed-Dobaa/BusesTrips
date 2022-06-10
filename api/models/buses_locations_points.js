@@ -13,17 +13,9 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    lat: {
+    pointId: {
       type: DataTypes.INTEGER,
       allowNull: false
-    },
-    long: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    point: {
-     type: DataTypes.STRING(1000),
-     allowNull: false
     },
     createdAt: {
       type: DataTypes.DATE,
