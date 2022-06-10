@@ -12,6 +12,7 @@ const companyController = require('./controllers/companyController');
 const busesController = require('./controllers/busesController');
 const busesRoutesController = require('./controllers/busesLocationsController');
 const tripsController = require('./controllers/trips');
+const pointsController = require('./controllers/points');
 
 /////////////////// *** mobile controller *** ///////////////////////
 const mobileAuthenticationController = require('./controllers/mobile/authenticationController');
@@ -366,6 +367,35 @@ module.exports = [
       description: 'delete bus route',
       auth: false,
       handler: busesRoutesController.deleteBusRoute
+    }
+  },
+  {
+    path: '/web/createPoints',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new buses routes',
+      auth: false,
+      // validate: companySchema.createCompany,
+      handler: pointsController.createPoints
+    }
+  },
+  {
+    path: '/web/getPoints/{companyId}',
+    method: 'GET',
+    options: {
+      description: 'Get all company buses routes',
+      auth: false,
+      handler: pointsController.getPoints
+    }
+  },
+  {
+    path: '/web/deletePoints/{id}',
+    method: 'DELETE',
+    options: {
+      description: 'delete bus route',
+      auth: false,
+      handler: pointsController.deletePoints
     }
   },
   {
