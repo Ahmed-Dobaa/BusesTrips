@@ -14,20 +14,21 @@ module.exports = {
 
   createPoints: async (request, reply) => {
     let transaction;
+    let created = null;
     try {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
           if(payload.id === null){  // create new points
             for(let i = 0; i < payload.route.length; i++){
                 payload.route[i]["companyId"] = payload.companyId;
-                await models.points.create(payload.route[i], {transaction});
+                created = await models.points.create(payload.route[i], {transaction});
             }
           }else{
             await models.points.update(payload, {where: {id: payload.id }}, {transaction});
             for(let i = 0; i < payload.route.length; i++){
               if(payload.route[i].id === null){
                 payload.route[i]["companyId"] = payload.companyId;
-                await models.points.create(payload.route[i], {transaction});
+                created = await models.points.create(payload.route[i], {transaction});
               }else{
                 await models.points.update(payload.route[i], {where: {id: payload.route[i].id}}, {transaction});
               }
@@ -36,7 +37,7 @@ module.exports = {
           }
 
       await transaction.commit();
-      return responseService.OK(reply, { value: payload, message: 'Points updated successfully' });
+      return responseService.OK(reply, { value: created, message: 'Points updated successfully' });
     }
     catch (e) {
       console.log(e)
