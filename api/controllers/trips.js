@@ -25,7 +25,7 @@ module.exports = {
              const t = trip.id;
             let startDate = new Date(payload.startDate);
             let endDate = new Date(payload.endDate);
-
+            startDate.setHours(10)
             // lastToday =  lastToday.setHours ( lastToday.getHours() + 4 )
 
             do{
@@ -36,14 +36,50 @@ module.exports = {
                   do{
                     tripDayes = {"tripId": t, "date": startDate, "day": day};
                     await models.trips_days.create(tripDayes, {transaction});
-                    if(payload.interval === '1'){
+                    if(payload.interval === '52'){
+                      startDate.setMinutes ( startDate.getMinutes() + 5 )
+                    }
+                    if(payload.interval === '53'){
                       startDate.setMinutes ( startDate.getMinutes() + 10 )
                     }
-                    if(payload.interval === '2'){
+                    if(payload.interval === '54'){
+                      startDate.setMinutes ( startDate.getMinutes() + 15 )
+                    }
+
+                    if(payload.interval === '55'){
                       startDate.setMinutes ( startDate.getMinutes() + 20 )
                     }
-                    if(payload.interval === '3'){
+
+                    if(payload.interval === '56'){
+                      startDate.setMinutes ( startDate.getMinutes() + 25 )
+                    }
+
+                    if(payload.interval === '57'){
                       startDate.setMinutes ( startDate.getMinutes() + 30 )
+                    }
+
+                    if(payload.interval === '58'){
+                      startDate.setMinutes ( startDate.getMinutes() + 35 )
+                    }
+
+                    if(payload.interval === '59'){
+                      startDate.setMinutes ( startDate.getMinutes() + 40 )
+                    }
+
+                    if(payload.interval === '60'){
+                      startDate.setMinutes ( startDate.getMinutes() + 45 )
+                    }
+
+                    if(payload.interval === '61'){
+                      startDate.setMinutes ( startDate.getMinutes() + 50 )
+                    }
+
+                    if(payload.interval === '62'){
+                      startDate.setMinutes ( startDate.getMinutes() + 55 )
+                    }
+
+                    if(payload.interval === '63'){
+                      startDate.setMinutes ( startDate.getMinutes() + 60 )
                     }
 
                   }while( startDate.getHours() <= last)
