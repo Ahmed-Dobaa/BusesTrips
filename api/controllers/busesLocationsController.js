@@ -72,7 +72,9 @@ module.exports = {
 
       for(let i = 0 ; i < locations.length; i++){
         let routes = await models.sequelize.query(` select id, pointId,
-        (select point from points p where p.id = pointId) name
+        (select point from points p where p.id = pointId) name,
+        (select lat from points p where p.id = pointId) lat,
+        (select \`long\` from points p where p.id = pointId) \`long\`
       from  buses_locations_points
       where bus_location_id = ${locations[i].id}
       and deletedAt is null

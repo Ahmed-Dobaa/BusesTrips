@@ -17,9 +17,44 @@ module.exports = {
     try {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
+      let tripDayes = {};
+      let trip = null;
         if("id" in payload){
           if(payload.id === null){  // create new trip
-              await models.trips.create(payload, {transaction});
+             trip = await models.trips.create(payload, {transaction});
+             const t = trip.id;
+            let startDate = new Date(payload.startDate);
+            let endDate = new Date(payload.endDate);
+
+            // lastToday =  lastToday.setHours ( lastToday.getHours() + 4 )
+
+            do{
+              let last = startDate.getHours() + 4;
+              let day = startDate.toString().split(' ')[0];
+              for(let i = 0; i < payload.days.length; i++){
+                if(day === payload.days[i].name.substring(0, 3)){
+                  do{
+                    tripDayes = {"tripId": t, "date": startDate, "day": day};
+                    await models.trips_days.create(tripDayes, {transaction});
+                    if(payload.interval === '1'){
+                      startDate.setMinutes ( startDate.getMinutes() + 10 )
+                    }
+                    if(payload.interval === '2'){
+                      startDate.setMinutes ( startDate.getMinutes() + 20 )
+                    }
+                    if(payload.interval === '3'){
+                      startDate.setMinutes ( startDate.getMinutes() + 30 )
+                    }
+
+                  }while( startDate.getHours() <= last)
+                }
+              }
+            //  startDate.setHours(startDate.getHours() + 4);
+             startDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
+             startDate.setHours(10)
+        console.log(startDate)
+            }while(startDate < endDate)
+
           }else{
             await models.trips.update(payload, {where: {id: payload.id }}, {transaction});
           }
@@ -33,6 +68,7 @@ module.exports = {
       return responseService.OK(reply, { value: payload, message: 'Trips updated successfully' });
     }
     catch (e) {
+      console.log(e);
       if(transaction) {
         await transaction.rollback();
       }

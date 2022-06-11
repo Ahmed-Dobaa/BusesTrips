@@ -2,30 +2,22 @@
 
 
 module.exports = function (sequelize, DataTypes) {
-  const trips = sequelize.define('trips', {
+  const trips_days = sequelize.define('trips_days', {
     id: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
     },
-    name: {
+    day: {
       type: DataTypes.STRING(1000),
       allowNull: false
     },
-    startDate: {
+    date: {
       type: DataTypes.DATE,
       allowNull: false
     },
-    endDate: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    companyId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    busRouteId: {
+    tripId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
@@ -42,6 +34,6 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: true,
     }
-  }, { tableName: 'trips', paranoid: true });
-  return trips;
+  }, { tableName: 'trips_days', paranoid: true });
+  return trips_days;
 };
