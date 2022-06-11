@@ -116,19 +116,21 @@ module.exports = {
     let language = request.headers.language;
     let locations = null;
      try {
-      locations = await models.sequelize.query(` SELECT t.id, t.name, startPoint, endPoint, busId, b.seatsStructure, b.busSeatsNumber,
-                  busPlateNumber bus, busRouteId, route, t.companyId, c.name companyName
-                  FROM trips t, buses b, buses_locations l, companies c
+      locations = await models.sequelize.query(` SELECT t.id, t.name, startDate, endDate,
+                  busRouteId, t.companyId, c.name companyName
+                  FROM trips t, companies c
                   where t.companyId = ${request.params.companyId}
-                  and t.busId = b.id
-                  and t.busRouteId = l.id
                   and t.companyId = c.id
                   and t.deletedAt is null
                   `, { type: QueryTypes.SELECT });
 
                   for(let i =0 ; i < locations.length; i++){
-                    let array = locations[i].route.split(",");
-                    locations[i]["route"] = array;
+                    let days = await models.sequelize.query(`SELECT id, \`date\`, \`day\`, createdAt
+                    FROM trips_days
+                    where tripId = ${locations[i].id}
+                    and deletedAt is null
+                  `, { type: QueryTypes.SELECT });
+                    locations[i]["days"] = days;
                   }
        return responseService.OK(reply, {value: locations, message: "Company trips" });
      } catch (e) {
