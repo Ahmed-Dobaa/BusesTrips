@@ -62,7 +62,15 @@ module.exports = {
     let language = request.headers.language;
     let locations = null;
      try {
-      locations = await models.sequelize.query(` SELECT l.id, l.companyId, c.name companyName, routeName
+      locations = await models.sequelize.query(` SELECT l.id, l.companyId, c.name companyName, routeName,
+      startPoint,
+      (select point from points p where p.id = startPoint) startPointName,
+      (select lat from points p where p.id = startPoint) startPointLat,
+      (select \`long\` from points p where p.id = startPoint) startPointLong,
+      endPoint,
+      (select point from points p where p.id = endPoint) endPointName,
+      (select lat from points p where p.id = endPoint) endPointLat,
+      (select \`long\` from points p where p.id = endPoint) endPointLong
       FROM buses_locations l, companies c
       where l.companyId = ${request.params.companyId}
       and l.companyId = c.id

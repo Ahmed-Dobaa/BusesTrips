@@ -17,6 +17,14 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    startPoint: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    endPoint: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
