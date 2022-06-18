@@ -23,73 +23,77 @@ module.exports = {
           if(payload.id === null){  // create new trip
              trip = await models.trips.create(payload, {transaction});
              const t = trip.id;
-            let startDate = new Date(payload.startDate);
-            let endDate = new Date(payload.endDate);
-            startDate.setHours(10)
+            // let startDate = new Date(payload.startDate);
+            // let endDate = new Date(payload.endDate);
+            // startDate.setHours(10)
             // lastToday =  lastToday.setHours ( lastToday.getHours() + 4 )
 
-            do{
-              let last = startDate.getHours() + 4;
-              let day = startDate.toString().split(' ')[0];
+            // do{
+              // let last = startDate.getHours() + 4;
+              // let day = startDate.toString().split(' ')[0];
               for(let i = 0; i < payload.days.length; i++){
-                if(day === payload.days[i].name.substring(0, 3)){
-                  do{
-                    tripDayes = {"tripId": t, "date": startDate, "day": day};
-                    await models.trips_days.create(tripDayes, {transaction});
-                    if(payload.interval === '52'){
-                      startDate.setMinutes ( startDate.getMinutes() + 5 )
-                    }
-                    if(payload.interval === '53'){
-                      startDate.setMinutes ( startDate.getMinutes() + 10 )
-                    }
-                    if(payload.interval === '54'){
-                      startDate.setMinutes ( startDate.getMinutes() + 15 )
-                    }
+                // if(day === payload.days[i].name.substring(0, 3)){
+                  // do{
+                      tripDayes = {"tripId": t, "day": payload.days[i].name,
+                         "from": payload.from, "to": payload.to};
+                      await models.trips_days.create(tripDayes, {transaction});
 
-                    if(payload.interval === '55'){
-                      startDate.setMinutes ( startDate.getMinutes() + 20 )
-                    }
 
-                    if(payload.interval === '56'){
-                      startDate.setMinutes ( startDate.getMinutes() + 25 )
-                    }
 
-                    if(payload.interval === '57'){
-                      startDate.setMinutes ( startDate.getMinutes() + 30 )
-                    }
+                    // if(payload.interval === '52'){
+                    //   startDate.setMinutes ( startDate.getMinutes() + 5 )
+                    // }
+                    // if(payload.interval === '53'){
+                    //   startDate.setMinutes ( startDate.getMinutes() + 10 )
+                    // }
+                    // if(payload.interval === '54'){
+                    //   startDate.setMinutes ( startDate.getMinutes() + 15 )
+                    // }
 
-                    if(payload.interval === '58'){
-                      startDate.setMinutes ( startDate.getMinutes() + 35 )
-                    }
+                    // if(payload.interval === '55'){
+                    //   startDate.setMinutes ( startDate.getMinutes() + 20 )
+                    // }
 
-                    if(payload.interval === '59'){
-                      startDate.setMinutes ( startDate.getMinutes() + 40 )
-                    }
+                    // if(payload.interval === '56'){
+                    //   startDate.setMinutes ( startDate.getMinutes() + 25 )
+                    // }
 
-                    if(payload.interval === '60'){
-                      startDate.setMinutes ( startDate.getMinutes() + 45 )
-                    }
+                    // if(payload.interval === '57'){
+                    //   startDate.setMinutes ( startDate.getMinutes() + 30 )
+                    // }
 
-                    if(payload.interval === '61'){
-                      startDate.setMinutes ( startDate.getMinutes() + 50 )
-                    }
+                    // if(payload.interval === '58'){
+                    //   startDate.setMinutes ( startDate.getMinutes() + 35 )
+                    // }
 
-                    if(payload.interval === '62'){
-                      startDate.setMinutes ( startDate.getMinutes() + 55 )
-                    }
+                    // if(payload.interval === '59'){
+                    //   startDate.setMinutes ( startDate.getMinutes() + 40 )
+                    // }
 
-                    if(payload.interval === '63'){
-                      startDate.setMinutes ( startDate.getMinutes() + 60 )
-                    }
+                    // if(payload.interval === '60'){
+                    //   startDate.setMinutes ( startDate.getMinutes() + 45 )
+                    // }
 
-                  }while( startDate.getHours() <= last)
-                }
+                    // if(payload.interval === '61'){
+                    //   startDate.setMinutes ( startDate.getMinutes() + 50 )
+                    // }
+
+                    // if(payload.interval === '62'){
+                    //   startDate.setMinutes ( startDate.getMinutes() + 55 )
+                    // }
+
+                    // if(payload.interval === '63'){
+                    //   startDate.setMinutes ( startDate.getMinutes() + 60 )
+                    // }
+
+                  // }while( startDate.getHours() <= last)
+                // }
               }
             //  startDate.setHours(startDate.getHours() + 4);
-             startDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
-             startDate.setHours(10)
-        console.log(startDate)
-            }while(startDate < endDate)
+        //      startDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
+        //      startDate.setHours(10)
+        // console.log(startDate)
+            // }while(startDate < endDate)
 
           }else{
             await models.trips.update(payload, {where: {id: payload.id }}, {transaction});
@@ -132,6 +136,32 @@ module.exports = {
                   `, { type: QueryTypes.SELECT });
                     locations[i]["days"] = days;
                   }
+       return responseService.OK(reply, {value: locations, message: "Company trips" });
+     } catch (e) {
+      return responseService.InternalServerError(reply, e);
+     }
+  },
+
+
+  getTripsBasedRoute: async (request, reply) => {
+    let language = request.headers.language;
+    let locations = null;
+     try {
+      locations = await models.sequelize.query(` SELECT d.id, Concat (t.name,', Day ', d.day, ' From ', d.from, ' To ', d.to) trip
+                  FROM trips t, trips_days d
+                  where busRouteId = ${request.params.routeId}
+                  and t.deletedAt is null
+                  and t.id = d.tripId
+                  `, { type: QueryTypes.SELECT });
+
+                  // for(let i =0 ; i < locations.length; i++){
+                  //   let days = await models.sequelize.query(`SELECT id, \`date\`, \`day\`, createdAt
+                  //   FROM trips_days
+                  //   where tripId = ${locations[i].id}
+                  //   and deletedAt is null
+                  // `, { type: QueryTypes.SELECT });
+                  //   locations[i]["days"] = days;
+                  // }
        return responseService.OK(reply, {value: locations, message: "Company trips" });
      } catch (e) {
       return responseService.InternalServerError(reply, e);

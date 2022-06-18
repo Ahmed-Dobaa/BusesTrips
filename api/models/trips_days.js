@@ -15,10 +15,18 @@ module.exports = function (sequelize, DataTypes) {
     },
     date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     tripId: {
       type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    from: {
+      type: DataTypes.DOUBLE,
+      allowNull: false
+    },
+    to: {
+      type: DataTypes.DOUBLE,
       allowNull: false
     },
     createdAt: {

@@ -419,6 +419,15 @@ module.exports = [
     }
   },
   {
+    path: '/web/getTripsBasedRoutes/{routeId}',
+    method: 'GET',
+    options: {
+      description: 'Get all company trips',
+      auth: false,
+      handler: tripsController.getTripsBasedRoute
+    }
+  },
+  {
     path: '/web/trips/{id}',
     method: 'DELETE',
     options: {
