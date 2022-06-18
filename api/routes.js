@@ -13,6 +13,7 @@ const busesController = require('./controllers/busesController');
 const busesRoutesController = require('./controllers/busesLocationsController');
 const tripsController = require('./controllers/trips');
 const pointsController = require('./controllers/points');
+const singleTripsController = require('./controllers/single_trips');
 
 /////////////////// *** mobile controller *** ///////////////////////
 const mobileAuthenticationController = require('./controllers/mobile/authenticationController');
@@ -436,7 +437,44 @@ module.exports = [
       handler: tripsController.deleteTrip
     }
   },
-
+  {
+    path: '/web/createSingleTrip',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new trips',
+      auth: false,
+      // validate: companySchema.createCompany,
+      handler: singleTripsController.createSingleTrip
+    }
+  },
+  {
+    path: '/web/singleTrips/{companyId}',
+    method: 'GET',
+    options: {
+      description: 'Get all company trips',
+      auth: false,
+      handler: singleTripsController.singleTrips
+    }
+  },
+  // {
+  //   path: '/web/getTripsBasedRoutes/{routeId}',
+  //   method: 'GET',
+  //   options: {
+  //     description: 'Get all company trips',
+  //     auth: false,
+  //     handler: tripsController.getTripsBasedRoute
+  //   }
+  // },
+  {
+    path: '/web/singleTrip/{id}',
+    method: 'DELETE',
+    options: {
+      description: 'delete trip',
+      auth: false,
+      handler: singleTripsController.deleteSingleTrip
+    }
+  },
 
 
   //////////////////****************************////////////////////
