@@ -21,6 +21,8 @@ const userSettingsController = require('./controllers/mobile/userSettingsControl
 const customerController = require('./controllers/mobile/customersController');
 
 
+/////////////////// *** mobile controller *** ///////////////////////
+const webAuthenticationController = require('./controllers/web/authenticationController');
 
 ///////////// web schema
 const registrationSchema = require('./schemas/registration.js');
@@ -35,6 +37,8 @@ const mobileRegistrationSchema = require('./schemas/mobile/registration');
 const mobileLoginSchema = require('./schemas/mobile/login');
 const customerSchema = require('./schemas/mobile/customer');
 const usersSettingsSchema = require('./schemas/mobile/usersSettings');
+
+const webLoginSchema = require('./schemas/web/login');
 
 module.exports = [
   {
@@ -583,6 +587,29 @@ module.exports = [
       validate: usersSettingsSchema.updateUserSettings,
       auth: false,
       handler: userSettingsController.updateUserSettings
+    }
+  },
+  {
+    path: '/api/signUp',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'] },
+      plugins: { 'hapi-geo-locate': { enabled: true, fakeIP: '41.46.64.133' } },
+      description: 'register new customer',
+      auth: false,
+      validate: mobileRegistrationSchema,
+      handler: webAuthenticationController.signUp
+   }
+  },
+  {
+    path: '/api/signIn',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'login',
+      validate: webLoginSchema,
+      auth: false,
+      handler: webAuthenticationController.signIn
     }
   },
 ];
