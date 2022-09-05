@@ -69,7 +69,7 @@ module.exports = {
     try {
 
       const { payload } = request;
-      const foundCustomer = await models.customers.findOne({ where: { phoneNumber: payload.phoneNumber } });
+      const foundCustomer = await models.customers.findOne({ where: { phoneNumber: payload.phoneNumber, channel: 'W' } });
 
       if(_.isEmpty(foundCustomer) || !foundCustomer.validPassword(payload.password)) {
         return Boom.unauthorized('Wrong Mobile Number Or Password')
