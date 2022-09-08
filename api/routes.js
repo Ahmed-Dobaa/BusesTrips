@@ -386,6 +386,38 @@ module.exports = [
     }
   },
   {
+    path: '/api/getPointsBasedTripType/{tripPoint}',
+    method: 'GET',
+    options: {
+      description: 'Create new buses routes',
+      auth: false,
+      // validate: companySchema.createCompany,
+      handler: pointsController.getPointsBasedTripType
+    }
+  },
+  {
+    path: '/api/searchTrips',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new buses routes',
+      auth: false,
+      // validate: companySchema.createCompany,
+      handler: pointsController.getSearchTrips
+    }
+  },
+  {
+    path: '/api/reservation',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new buses routes',
+      auth: false,
+      // validate: companySchema.createCompany,
+      handler: pointsController.reservation
+    }
+  },
+  {
     path: '/web/getPoints/{companyId}',
     method: 'GET',
     options: {
