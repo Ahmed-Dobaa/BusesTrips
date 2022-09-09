@@ -136,24 +136,52 @@ module.exports = {
       // and l.deletedAt is null
       // `, { type: QueryTypes.SELECT });
 
-
+       if(request.payload.type === 64){
         let points = await models.sequelize.query(` select id, (select name from trips t where t.id = tripId) name,
-          (select busSeatsNumber from buses b where b.id= busId) busSeatsNumber,
-          (select lookupDetailName from lookup_details where id = (select seatsStructure from
-            buses where id = busId)) seatsStructure,
-            (select busPlateNumber from buses b where b.id= busId) busPlateNumber
-              from single_trips
-              where date like '%${request.payload.startDate}%'
-              and tripId in (select id from trips where busRouteId in (select id from buses_locations where startPoint= ${request.payload.startPoint}
-                and endPoint= ${request.payload.endPoint} ))
-              and deletedAt is null
-      `, { type: QueryTypes.SELECT });
-      //   let array = locations[i].route.split(",");
-      //   locations[i]["route"] = array;
+        (select busSeatsNumber from buses b where b.id= busId) busSeatsNumber,
+        (select lookupDetailName from lookup_details where id = (select seatsStructure from
+          buses where id = busId)) seatsStructure,
+          (select busPlateNumber from buses b where b.id= busId) busPlateNumber
+            from single_trips
+            where date like '%${request.payload.startDate}%'
+            and tripId in (select id from trips where busRouteId in (select id from buses_locations where startPoint= ${request.payload.startPoint}
+              and endPoint= ${request.payload.endPoint} ))
+            and deletedAt is null
+          `, { type: QueryTypes.SELECT });
+          return responseService.OK(reply, {value: points, message: "Found trips" });
+       }
 
-      //await models.buses_locations.findAll({where: {companyId: request.params.companyId}});
-       return responseService.OK(reply, {value: points, message: "Found trips" });
+       if(request.payload.type === 65){
+        const child= await models.childs.findOne({ where: { id: request.payload.child}});
+              let points = await models.sequelize.query(`
+              SELECT t2.name, bl.routeName, bl.id routeId, b2.busPlateNumber, b2.busSeatsNumber,
+              (select lookupDetailName from lookup_details l where l.id= b2.seatsStructure) seatsStructure
+              FROM single_trips st, trips t2, buses_locations bl, buses b2
+              where st.tripId = t2.id
+              and t2.busRouteId = bl.id
+              and st.busId = b2.id
+              and ( bl.startPoint = ${child.school} or bl.endPoint = ${child.school})
+              and st.deletedAt is null
+          `, { type: QueryTypes.SELECT });
+          console.log(points)
+        for(let i= 0; i < points.length; i++){
+          let route = await models.sequelize.query(`
+          SELECT pointId, p.point
+          from buses_locations_points b, points p
+          where bus_location_id= ${points[i].routeId}
+          and b.pointId = p.id
+          and b.deletedAt is null
+      `, { type: QueryTypes.SELECT });
+
+           points[i]["routePoints"]= route;
+        }
+
+          return responseService.OK(reply, {value: points, message: "Found trips" });
+
+       }
+
      } catch (e) {
+      console.log(e)
       return responseService.InternalServerError(reply, e);
      }
   },

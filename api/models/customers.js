@@ -14,6 +14,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: true,
     },
+    job: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
     channel: {
       type: DataTypes.STRING(255),
       allowNull: true,

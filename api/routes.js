@@ -634,6 +634,24 @@ module.exports = [
    }
   },
   {
+    path: '/api/addParentData',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'] },
+      description: 'register new customer',
+      auth: false,
+      handler: webAuthenticationController.addParentData
+   }
+  },{
+    path: '/api/getParentData/{customerId}',
+    method: 'GET',
+    options: {
+      description: 'register new customer',
+      auth: false,
+      handler: webAuthenticationController.getParentData
+   }
+  },
+  {
     path: '/api/signIn',
     method: 'POST',
     options: {

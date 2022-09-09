@@ -95,6 +95,56 @@ module.exports = {
       return responseService.InternalServerError(reply, e);
     }
   },
+
+  addParentData: async (request, reply) =>{
+    let language = request.headers.language;
+    let transaction;
+    try {
+      transaction = await models.sequelize.transaction();
+      const { payload } = request;
+      const customer = await models.customers.update(payload, { where: { id: payload.id, channel: 'W' } });
+
+      for(let i= 0; i < payload.childern.length; i++){
+        payload.childern[i]["customerId"]= payload.id;
+        if(payload.childern[i].id === null) {
+          const child = await models.childs.create(payload.childern[i]);
+        }else{
+          const child = await models.childs.update( payload.childern[i], { where: { id: payload.childern[i].id} });
+        }
+      }
+      await transaction.commit();
+      return responseService.OK(reply, {value: customer, message: "Updated parent and childs data" });
+    }
+    catch (e) {
+      console.log('Error', e);
+      if(transaction) {
+        await transaction.rollback();
+      }
+      return responseService.InternalServerError(reply, e);
+    }
+  },
+  getParentData: async (request, reply) =>{
+    let language = request.headers.language;
+    try {
+      const customer = await models.customers.findOne({ where: { id: request.params.customerId, channel: 'W' } });
+
+          const childs = await models.sequelize.query(`select id, name, age, pickup, school,
+          (select point from points p where p.id= school) schoolName
+             from childs where customerId= ${request.params.customerId}
+              and deletedAt is null
+      `, { type: QueryTypes.SELECT });
+   console.log(childs)
+           customer.dataValues["childern"] = childs;
+
+
+      return responseService.OK(reply, {value: customer, message: "Parent data" });
+    }
+    catch (e) {
+      console.log('Error', e);
+
+      return responseService.InternalServerError(reply, e);
+    }
+  },
   activateAccount: async (request, reply) => {
     let language = request.headers.language;
     try {
