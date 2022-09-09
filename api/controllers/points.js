@@ -137,11 +137,15 @@ module.exports = {
       // `, { type: QueryTypes.SELECT });
 
 
-        let points = await models.sequelize.query(` select id, name
-              from trips
-              where startDate like '%${request.payload.startDate}%'
-              and busRouteId in (select id from buses_locations where startPoint= ${request.payload.startPoint}
-                 and endPoint= ${request.payload.endPoint} )
+        let points = await models.sequelize.query(` select id, (select name from trips t where t.id = tripId) name,
+          (select busSeatsNumber from buses b where b.id= busId) busSeatsNumber,
+          (select lookupDetailName from lookup_details where id = (select seatsStructure from
+            buses where id = busId)) seatsStructure,
+            (select busPlateNumber from buses b where b.id= busId) busPlateNumber
+              from single_trips
+              where date like '%${request.payload.startDate}%'
+              and tripId in (select id from trips where busRouteId in (select id from buses_locations where startPoint= ${request.payload.startPoint}
+                and endPoint= ${request.payload.endPoint} ))
               and deletedAt is null
       `, { type: QueryTypes.SELECT });
       //   let array = locations[i].route.split(",");
