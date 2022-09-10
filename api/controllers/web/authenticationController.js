@@ -145,6 +145,44 @@ module.exports = {
       return responseService.InternalServerError(reply, e);
     }
   },
+
+  addStudentData: async (request, reply) =>{
+    let language = request.headers.language;
+    let transaction;
+    try {
+      transaction = await models.sequelize.transaction();
+      const { payload } = request;
+      const customer = await models.customers.update(payload, { where: { id: payload.id, channel: 'W' } });
+
+
+      await transaction.commit();
+      return responseService.OK(reply, {value: customer, message: "Updated student data" });
+    }
+    catch (e) {
+      console.log('Error', e);
+      if(transaction) {
+        await transaction.rollback();
+      }
+      return responseService.InternalServerError(reply, e);
+    }
+  },
+  getStudentData: async (request, reply) =>{
+    let language = request.headers.language;
+    try {
+      const customer = await models.sequelize.query(`select id, name, phoneNumber, university, faculty, year, parentName,
+              parentPhoneNumber, parentJob, pickup
+              from customers
+              where id= ${request.params.id}
+              and deletedAt is null`, { type: QueryTypes.SELECT })
+
+      return responseService.OK(reply, {value: customer, message: "Student data" });
+    }
+    catch (e) {
+      console.log('Error', e);
+
+      return responseService.InternalServerError(reply, e);
+    }
+  },
   activateAccount: async (request, reply) => {
     let language = request.headers.language;
     try {

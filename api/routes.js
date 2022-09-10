@@ -642,13 +642,33 @@ module.exports = [
       auth: false,
       handler: webAuthenticationController.addParentData
    }
-  },{
+  },
+  {
+    path: '/api/addStudentData',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'] },
+      description: 'register new customer',
+      auth: false,
+      handler: webAuthenticationController.addStudentData
+   }
+  },
+  {
     path: '/api/getParentData/{customerId}',
     method: 'GET',
     options: {
       description: 'register new customer',
       auth: false,
       handler: webAuthenticationController.getParentData
+   }
+  },
+  {
+    path: '/api/getStudentData/{id}',
+    method: 'GET',
+    options: {
+      description: 'register new customer',
+      auth: false,
+      handler: webAuthenticationController.getStudentData
    }
   },
   {

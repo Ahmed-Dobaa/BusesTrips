@@ -18,6 +18,34 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: true,
     },
+    university: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    faculty: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    year: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    parentName: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    parentPhoneNumber: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    parentJob: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    pickup: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
     channel: {
       type: DataTypes.STRING(255),
       allowNull: true,
