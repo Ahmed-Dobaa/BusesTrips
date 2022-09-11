@@ -65,6 +65,15 @@ module.exports = [
     }
   },
   {
+    path: '/api/getLookupDetailBasedMaster/{masterId}',
+    method: 'GET',
+    options: {
+      description: 'getLookupDetailBasedMaster',
+      auth: false,
+      handler: lookupDetailsController.getLookupDetailBasedMaster
+    }
+  },
+  {
     path: '/web/register',
     method: 'POST',
     options: {
