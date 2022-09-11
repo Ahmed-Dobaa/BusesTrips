@@ -80,6 +80,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
+    subsciptionType: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
     activationToken: {
       type: DataTypes.STRING(255),
       allowNull: true

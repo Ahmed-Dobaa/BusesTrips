@@ -170,7 +170,7 @@ module.exports = {
     let language = request.headers.language;
     try {
       const customer = await models.sequelize.query(`select id, name, phoneNumber, university, faculty, year, parentName,
-              parentPhoneNumber, parentJob, pickup
+              parentPhoneNumber, parentJob, pickup, subsciptionType
               from customers
               where id= ${request.params.id}
               and deletedAt is null`, { type: QueryTypes.SELECT })
