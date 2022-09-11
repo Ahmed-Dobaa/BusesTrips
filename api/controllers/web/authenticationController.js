@@ -175,7 +175,7 @@ module.exports = {
               where id= ${request.params.id}
               and deletedAt is null`, { type: QueryTypes.SELECT })
 
-      return responseService.OK(reply, {value: customer, message: "Student data" });
+      return responseService.OK(reply, {value: customer[0], message: "Student data" });
     }
     catch (e) {
       console.log('Error', e);

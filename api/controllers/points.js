@@ -154,7 +154,7 @@ module.exports = {
        if(request.payload.type === 65){
         const child= await models.childs.findOne({ where: { id: request.payload.child}});
               let points = await models.sequelize.query(`
-              SELECT t2.name, bl.routeName, bl.id routeId, b2.busPlateNumber, b2.busSeatsNumber,
+              SELECT t2.name, st.tripId, bl.routeName, bl.id routeId, b2.busPlateNumber, b2.busSeatsNumber,
               (select lookupDetailName from lookup_details l where l.id= b2.seatsStructure) seatsStructure
               FROM single_trips st, trips t2, buses_locations bl, buses b2
               where st.tripId = t2.id
