@@ -195,12 +195,70 @@ module.exports = {
           return responseService.OK(reply, {value: points, message: "Found university trips" });
        }
 
+       if(request.payload.type === 66 && request.payload.subsciptionType === 68){
+        let points = await models.sequelize.query(`select id, routeName, companyId
+            from buses_locations
+            where id in(select bus_location_id from buses_locations_points where pointId= ${request.payload.endPoint})
+            and deletedAt is null
+          `, { type: QueryTypes.SELECT });
+          for(let i= 0; i < points.length; i++){
+            let route = await models.sequelize.query(`
+            SELECT pointId, p.point
+            from buses_locations_points b, points p
+            where bus_location_id= ${points[i].id}
+            and b.pointId = p.id
+            and b.deletedAt is null
+              `, { type: QueryTypes.SELECT });
+
+             points[i]["routePoints"]= route;
+          }
+          return responseService.OK(reply, {value: points, message: "Found university routes" });
+       }
      } catch (e) {
       console.log(e)
       return responseService.InternalServerError(reply, e);
      }
   },
 
+  reserveDates: async (request, reply) => {
+    let transaction;
+    let created = null;
+    try {
+      transaction = await models.sequelize.transaction();
+      const { payload } = request;
+      payload.name= "Student reservation"
+
+      for(let i= 0; i <payload.dates.length; i++){
+        let found= await models.sequelize.query(`
+        SELECT id, \`day\`, \`from\`, \`to\`, count
+        from trips_days
+        where \`day\`= '${payload.dates[i].day}'
+        and \`from\`= '${payload.dates[i].from}'
+        and \`to\`= '${payload.dates[i].to}'
+        and tripId in (select id from trips where busRouteId= ${payload.busRouteId})
+        and deletedAt is null
+    `, { type: QueryTypes.SELECT });
+    console.log(found)
+        if(found.length === 0){
+          created = await models.trips.create(payload, {transaction});
+          payload.dates[i].tripId= created.id;
+          await models.trips_days.create(payload.dates[i], {transaction});
+        }else{
+          await models.trips_days.update({count: found[0].count + 1}, {where: {id: found[0].id}}, { transaction });
+        }
+
+      }
+      await transaction.commit();
+      return responseService.OK(reply, { value: 1, message: 'Reservation done successfully' });
+    }
+    catch (e) {
+      console.log(e)
+      if(transaction) {
+        await transaction.rollback();
+      }
+      return responseService.InternalServerError(reply, e);
+    }
+  },
 
   deletePoints: async (request, reply) => {
 

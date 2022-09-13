@@ -395,6 +395,17 @@ module.exports = [
     }
   },
   {
+    path: '/api/reserveDates',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new buses routes',
+      auth: false,
+      // validate: companySchema.createCompany,
+      handler: pointsController.reserveDates
+    }
+  },
+  {
     path: '/api/getPointsBasedTripType/{tripPoint}',
     method: 'GET',
     options: {

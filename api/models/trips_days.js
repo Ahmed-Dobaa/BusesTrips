@@ -21,6 +21,11 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    count: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      default: 1
+    },
     from: {
       type: DataTypes.STRING,
       allowNull: false
