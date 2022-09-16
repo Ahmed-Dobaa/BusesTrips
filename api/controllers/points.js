@@ -238,8 +238,10 @@ module.exports = {
         and tripId in (select id from trips where busRouteId= ${payload.busRouteId})
         and deletedAt is null
     `, { type: QueryTypes.SELECT });
-    console.log(found)
         if(found.length === 0){
+          let getCompany= await models.buses_locations.findOne({where: {id: payload.busRouteId}});
+          console.log(getCompany)
+          payload.companyId= getCompany.companyId;
           created = await models.trips.create(payload, {transaction});
           payload.dates[i].tripId= created.id;
           await models.trips_days.create(payload.dates[i], {transaction});
