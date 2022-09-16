@@ -81,7 +81,8 @@ module.exports = {
       // `, { type: QueryTypes.SELECT });
 
 
-        let points = await models.sequelize.query(` select id, lat, \`long\`, \`point\`, companyId, main
+        let points = await models.sequelize.query(` select id, lat, \`long\`, \`point\`, companyId, main,
+        tripType, (select lookupDetailName from lookup_details l where l.id = tripType) lookTypeName
       from  points
       where companyId = ${request.params.companyId}
       and deletedAt is null
