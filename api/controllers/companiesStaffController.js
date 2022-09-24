@@ -49,6 +49,46 @@ module.exports = {
      }
   },
 
+  driverLogin: async (request, reply) => {
+    let language = request.headers.language;
+    let staff = null, bus= null, trip, result;
+     try {
+         staff= await models.sequelize.query(`SELECT id, name, job as job,
+                   (select lookupDetailName from lookup_details l where l.id = job) jobName, phoneNumber, companyId
+                   FROM companies_staff where phoneNumber = '${request.payload.phoneNumber}'
+                   and deletedAt is null `, { type: QueryTypes.SELECT });
+        if(staff.length !=0 ){
+           bus= await models.sequelize.query(`select id, busPlateNumber, busSeatsNumber, seatsStructure seatsStructureId,
+                          (select lookupDetailName from lookup_details l where l.id= seatsStructure) seatsStructure
+                          from buses where driverId= ${staff[0].id}`, { type: QueryTypes.SELECT });
+
+           trip= await models.sequelize.query(`select tripId, name tripName, busRouteId, routeName,
+              p.point startPoint, (select point from points po where po.id = b.endPoint) endPoint,
+              p.lat startPointLat, p.long startPointLong,
+              (select lat from points po where po.id = b.endPoint) endPointLat,
+              (select po.long from points po where po.id = b.endPoint) endPointLong
+              from single_trips s, trips t, buses_locations b, points p
+              where s.tripId= t.id and t.busRouteId = b.id and b.startPoint = p.id
+              and busId= ${bus[0].id}`, { type: QueryTypes.SELECT });
+           for(let i= 0; i < trip.length; i++){
+            let p= await models.sequelize.query(`select point, lat, p.long
+             from buses_locations_points l, points p
+             where l.pointId = p.id
+             and bus_location_id= ${trip[i].busRouteId}
+            `, { type: QueryTypes.SELECT });
+            trip[i]["routePoints"]= p;
+           }
+           result= {driverInfo: staff[0], busInfo: bus[0], trips: trip}
+           return responseService.OK(reply, { value: result, message: "Driver Data" });
+        }else{
+          return Boom.unauthorized('Wrong Mobile Number Or Password')
+        }
+
+     } catch (e) {
+      return responseService.InternalServerError(reply, e);
+     }
+  },
+
   deleteOneStaff: async (request, reply) => {
 
     let language = request.headers.language;

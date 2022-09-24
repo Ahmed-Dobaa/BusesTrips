@@ -279,6 +279,16 @@ module.exports = [
     }
   },
   {
+    path: '/mob/driverLogin',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new staff',
+      auth: false,
+      handler: companiesStaffController.driverLogin
+    }
+  },
+  {
     path: '/web/companyStaff/{companyId}',
     method: 'GET',
     options: {

@@ -147,13 +147,24 @@ module.exports = {
     let language = request.headers.language;
     let locations = null;
      try {
-      locations = await models.sequelize.query(` SELECT d.id, Concat (t.name,', Day ', d.day, ' From ', d.from, ' To ', d.to) trip
+      locations = await models.sequelize.query(` SELECT d.id, Day, Concat (t.name,', Day ', d.day, ' From ', d.from, ' To ', d.to) trip
                   FROM trips t, trips_days d
                   where busRouteId = ${request.params.routeId}
                   and t.deletedAt is null
                   and t.id = d.tripId
                   `, { type: QueryTypes.SELECT });
 
+                  for(let i= 0; i < locations.length; i++){
+                    if(locations[i].Day === 'Sunday') locations[i]["day"]= 0;
+                    if(locations[i].Day === 'Monday') locations[i]["day"]= 1;
+                    if(locations[i].Day === 'Tuesday') locations[i]["day"]= 2;
+                    if(locations[i].Day === 'Wednesday') locations[i]["day"]= 3;
+                    if(locations[i].Day === 'Thursday') locations[i]["day"]= 4;
+                    if(locations[i].Day === 'Friday') locations[i]["day"]= 5;
+                    if(locations[i].Day === 'Saturday') locations[i]["day"]= 6;
+
+                    delete locations[i].Day;
+                  }
                   // for(let i =0 ; i < locations.length; i++){
                   //   let days = await models.sequelize.query(`SELECT id, \`date\`, \`day\`, createdAt
                   //   FROM trips_days

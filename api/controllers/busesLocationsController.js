@@ -20,14 +20,16 @@ module.exports = {
         if("id" in payload){
           if(payload.id === null){  // create new bus route
             let location =  await models.buses_locations.create(payload, {transaction});
+            if(payload.points != null){
             for(let i = 0; i < payload.points.length; i++){
                 payload.points[i]["bus_location_id"] = location.id;
                 payload.points[i]["pointId"] = payload.points[i].id;
                 delete payload.points[i].id;
                 await models.buses_locations_points.create(payload.points[i], {transaction});
-            }
+            }}
           }else{
             await models.buses_locations.update(payload, {where: {id: payload.id }}, {transaction});
+            if(payload.points != null){
             for(let i = 0; i < payload.points.length; i++){
               if(payload.points[i].id === null){
                 payload.points[i]["bus_location_id"] = payload.id;
@@ -38,7 +40,8 @@ module.exports = {
                 await models.buses_locations_points.update(payload.points[i], {where: {id: payload.points[i].id}}, {transaction});
               }
 
-          }
+             }
+            }
           }
         }else{
            await transaction.rollback();
