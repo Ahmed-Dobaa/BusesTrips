@@ -19,7 +19,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     main: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       default: 0
     },
     lat: {
