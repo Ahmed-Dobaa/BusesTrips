@@ -95,7 +95,7 @@ module.exports = {
       })
      }
 
-     if(leftMenu[i].relatedTo === 9){
+     if(leftMenu[i].relatedTo === 10){
       routes.push({
         name: leftMenu[i].permissionName,
         icon: leftMenu[i].icon,
