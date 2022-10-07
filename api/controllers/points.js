@@ -101,25 +101,41 @@ module.exports = {
     let language = request.headers.language;
     let locations = null;
      try {
-      // locations = await models.sequelize.query(` SELECT l.id, l.companyId, c.name companyName,
-      // l.createdAt, l.updatedAt, l.deletedAt
-      // FROM buses_locations l, companies c
-      // where l.companyId = ${request.params.companyId}
-      // and l.companyId = c.id
-      // and l.deletedAt is null
-      // `, { type: QueryTypes.SELECT });
-
-
         let points = await models.sequelize.query(` select id, \`point\`
               from  points
               where tripType = ${request.params.tripPoint}
               and deletedAt is null
       `, { type: QueryTypes.SELECT });
-      //   let array = locations[i].route.split(",");
-      //   locations[i]["route"] = array;
+      let schools= [], schoolsPoints= [];
+    if(request.params.tripPoint === 65 || request.params.tripPoint === 69){
+       schools = await models.sequelize.query(` select id, \`point\`
+            from  points
+            where tripType = ${request.params.tripPoint}
+            and deletedAt is null
+      `, { type: QueryTypes.SELECT });
 
-      //await models.buses_locations.findAll({where: {companyId: request.params.companyId}});
-       return responseService.OK(reply, {value: points, message: "This category points" });
+       schoolsPoints = await models.sequelize.query(` select id, \`point\`
+            from  points
+            where tripType = ${request.params.tripPoint}
+            and deletedAt is null
+      `, { type: QueryTypes.SELECT });
+    }
+    let universities= [], universitiesPoints= [];
+    if(request.params.tripPoint === 66 || request.params.tripPoint === 70){
+         universities = await models.sequelize.query(` select id, \`point\`
+                from  points
+                where tripType = ${request.params.tripPoint}
+                and deletedAt is null
+        `, { type: QueryTypes.SELECT });
+
+         universitiesPoints = await models.sequelize.query(` select id, \`point\`
+                from  points
+                where tripType = ${request.params.tripPoint}
+                and deletedAt is null
+        `, { type: QueryTypes.SELECT });
+    }
+       return responseService.OK(reply, {value: {schools: schools, schoolsPoints: schoolsPoints,
+        universities: universities, universitiesPoints: universitiesPoints, points: points}, message: "This category points" });
      } catch (e) {
       return responseService.InternalServerError(reply, e);
      }
@@ -129,16 +145,6 @@ module.exports = {
     let language = request.headers.language;
     let locations = null;
      try {
-      // select id, (select name from trips t where t.id = tripId) name,
-      //   (select busSeatsNumber from buses b where b.id= busId) busSeatsNumber,
-      //   (select lookupDetailName from lookup_details where id = (select seatsStructure from
-      //     buses where id = busId)) seatsStructure,
-      //     (select busPlateNumber from buses b where b.id= busId) busPlateNumber
-      //       from single_trips
-      //       where date like '%${request.payload.startDate}%'
-      //       and tripId in (select id from trips where busRouteId in (select id from buses_locations where startPoint= ${request.payload.startPoint}
-      //         and endPoint= ${request.payload.endPoint} ))
-      //       and deletedAt is null
 
        if(request.payload.type === 64){
         let points = await models.sequelize.query(`
