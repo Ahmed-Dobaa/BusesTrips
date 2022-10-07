@@ -127,10 +127,12 @@ module.exports = {
     }
     let universities;
     let universitiesPoints;
+    console.log(request.params.tripPoint)
     if(request.params.tripPoint === 66 || request.params.tripPoint === 70){
+      console.log("dadada")
          universities = await models.sequelize.query(` select id, \`point\`
                 from  points
-                where tripType = ${request.params.tripPoint}
+                where tripType = 66
                 and deletedAt is null
         `, { type: QueryTypes.SELECT });
 
