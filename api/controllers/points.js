@@ -101,12 +101,17 @@ module.exports = {
     let language = request.headers.language;
     let locations = null;
      try {
-        let points = await models.sequelize.query(` select id, \`point\`
+      let points;
+      if(request.params.tripPoint === ){
+         points = await models.sequelize.query(` select id, \`point\`
               from  points
               where tripType = ${request.params.tripPoint}
               and deletedAt is null
       `, { type: QueryTypes.SELECT });
-      let schools= [], schoolsPoints= [];
+    }
+    let schools;
+    let schoolsPoints;
+
     if(request.params.tripPoint === 65 || request.params.tripPoint === 69){
        schools = await models.sequelize.query(` select id, \`point\`
             from  points
@@ -120,7 +125,8 @@ module.exports = {
             and deletedAt is null
       `, { type: QueryTypes.SELECT });
     }
-    let universities= [], universitiesPoints= [];
+    let universities;
+    let universitiesPoints;
     if(request.params.tripPoint === 66 || request.params.tripPoint === 70){
          universities = await models.sequelize.query(` select id, \`point\`
                 from  points
