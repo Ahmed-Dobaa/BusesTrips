@@ -160,8 +160,8 @@ module.exports = {
       }
       if(routes.length != 0){
         menu.push({
-          name: mainScreens[7].mainTitleName,
-          icon: mainScreens[7].mainScreenIcon,
+          name: mainScreens[8].mainTitleName,
+          icon: mainScreens[8].mainScreenIcon,
           children: routes
         })
       }
