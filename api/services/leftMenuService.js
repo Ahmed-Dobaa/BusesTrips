@@ -93,14 +93,15 @@ module.exports = {
           icon: leftMenu[i].icon,
           url: leftMenu[i].url
       })
-
-      if(leftMenu[i].relatedTo === 10){
-        routes.push({
-          name: leftMenu[i].permissionName,
-          icon: leftMenu[i].icon,
-          url: leftMenu[i].url
-      })
      }
+
+     if(leftMenu[i].relatedTo === 9){
+      routes.push({
+        name: leftMenu[i].permissionName,
+        icon: leftMenu[i].icon,
+        url: leftMenu[i].url
+    })
+   }
 
 
       }
@@ -157,15 +158,13 @@ module.exports = {
           children: trips
         })
       }
-
       if(routes.length != 0){
-        routes.push({
-          name: mainScreens[8].mainTitleName,
-          icon: mainScreens[8].mainScreenIcon,
-          children: trips
+        menu.push({
+          name: mainScreens[7].mainTitleName,
+          icon: mainScreens[7].mainScreenIcon,
+          children: routes
         })
       }
-    }
 
       return menu;
     }
