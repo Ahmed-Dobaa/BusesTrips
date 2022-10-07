@@ -152,16 +152,56 @@ module.exports = {
   getSearchTrips: async (request, reply) => {
     let language = request.headers.language;
     let locations = null;
+    let trip= [];
      try {
 
        if(request.payload.type === 64){
         let points = await models.sequelize.query(`
-        select t.id, t.name
-        from trips t
-        where busRouteId in (select id from buses_locations blp
+        select t.id, t.name, busRouteId, routeName, b.id routeId
+        from trips t, buses_locations b
+        where t.busRouteId = b.id
+        and busRouteId in (select id from buses_locations blp
         where blp.startPoint = ${request.payload.startPoint} and blp.endPoint = ${request.payload.endPoint})
           `, { type: QueryTypes.SELECT });
-          return responseService.OK(reply, {value: points, message: "Found trips" });
+
+          for(let i= 0; i < points.length; i++){
+            let routePoints = await models.sequelize.query(`SELECT pointId, p.point
+                        from buses_locations_points b, points p
+                        where bus_location_id= ${points[i].routeId}
+                        and b.pointId = p.id
+                        and b.deletedAt is null
+              `, { type: QueryTypes.SELECT });
+              // points[i]['routePoints']= routePoints;
+
+          let days = await models.sequelize.query(`select * from trips_days where tripId= ${points[i].id}
+              `, { type: QueryTypes.SELECT });
+              // points[i]["days"]= days
+
+            for(let j= 0; j < days.length; j++){
+              console.log(points[i].name)
+              console.log("------------")
+              days[j]["name"]= points[i].name;
+              days[j]["routeName"]= points[i].routeName;
+              days[j]["routePoints"]= routePoints;
+              trip.push(days[j])
+             }
+            console.log(trip)
+            console.log("+++++++++++")
+
+            }
+          //   // days= null;
+          // //   let routePoints = await models.sequelize.query(`SELECT pointId, p.point
+          // //   from buses_locations_points b, points p
+          // //   where bus_location_id= ${points[i].routeId}
+          // //   and b.pointId = p.id
+          // //   and b.deletedAt is null
+          // // `, { type: QueryTypes.SELECT });
+          // // trip.push
+          // }
+        for(let i= 0; i < points.length; i++){
+
+        }
+          return responseService.OK(reply, {value: trip, message: "Found trips" });
        }
 
        if(request.payload.type === 65){
