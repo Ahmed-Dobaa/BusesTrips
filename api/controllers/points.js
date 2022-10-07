@@ -102,7 +102,7 @@ module.exports = {
     let locations = null;
      try {
       let points;
-      if(request.params.tripPoint === 64 ){
+      if(request.params.tripPoint === '64' ){
          points = await models.sequelize.query(` select id, \`point\`
               from  points
               where tripType = ${request.params.tripPoint}
@@ -112,7 +112,7 @@ module.exports = {
     let schools;
     let schoolsPoints;
 
-    if(request.params.tripPoint === 65 || request.params.tripPoint === 69){
+    if(request.params.tripPoint === '65' || request.params.tripPoint === '69'){
        schools = await models.sequelize.query(` select id, \`point\`
             from  points
             where tripType = ${request.params.tripPoint}
@@ -128,7 +128,7 @@ module.exports = {
     let universities;
     let universitiesPoints;
     console.log(request.params.tripPoint)
-    if(request.params.tripPoint === 66 || request.params.tripPoint === '70'){
+    if(request.params.tripPoint === '66' || request.params.tripPoint === '70'){
       console.log("dadada")
          universities = await models.sequelize.query(` select id, \`point\`
                 from  points
