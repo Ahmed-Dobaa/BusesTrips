@@ -96,6 +96,30 @@ module.exports = {
     }
   },
 
+  setCustomerServiceType: async (request, reply) =>{
+    let transaction;
+    const { payload } = request;
+     try {
+      transaction = await models.sequelize.transaction();
+      console.log("payload",payload);
+      const customerFound = await models.customers.findAll({where: {customerId: request.params.customerId }});
+      console.log("customerFound",customerFound);
+      if(!_.isEmpty(customerFound)){
+        const customerUpdated = await models.customers.update(payload, {where: {customerId: request.params.customerId , channel: 'W'}}, { transaction });
+        await transaction.commit();
+        return responseService.OK(reply, {value: customerUpdated, message: "Service type updated successfully" });
+      }
+      await transaction.rollback();
+      return Boom.notAcceptable(`Sorry, We cannot found this customer right now!`);
+    }
+    catch (e) {
+      console.log('Error', e);
+      if(transaction) {
+        await transaction.rollback();
+      }
+      return responseService.InternalServerError(reply, e);
+    }
+  },
   addParentData: async (request, reply) =>{
     let language = request.headers.language;
     let transaction;

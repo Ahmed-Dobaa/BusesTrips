@@ -72,6 +72,10 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
       defaultValue: '0'
     },
+    serviceType: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
     emailVerifiedAt: {
       type: DataTypes.DATE,
       allowNull: true

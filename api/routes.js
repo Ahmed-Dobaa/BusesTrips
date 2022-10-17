@@ -664,6 +664,16 @@ module.exports = [
    }
   },
   {
+    path: '/api/setCustomerServiceType/{customerId}',
+    method: 'Put',
+    options: {
+      payload: { allow: ['application/json'] },
+      description: 'set customer service type',
+      auth: false,
+      handler: webAuthenticationController.setCustomerServiceType
+   }
+  },
+  {
     path: '/api/addParentData',
     method: 'POST',
     options: {
