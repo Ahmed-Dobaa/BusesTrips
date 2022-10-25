@@ -166,6 +166,30 @@ module.exports = {
       return responseService.InternalServerError(reply, e);
     }
   },
+ 
+  setServiceType: async (request, reply) =>{
+    let language = request.headers.language;
+    let transaction;
+    try {
+      transaction = await models.sequelize.transaction();
+      const { payload } = request;
+      const foundCustomer = await models.customers.findOne({ where: { 'id': request.params.id } });
+      await transaction.commit();
+      if(_.isEmpty(foundCustomer)) {
+        return Boom.notAcceptable('Wrong user');
+      }
+      await models.customers.update({ 'serviceType': payload.serviceType }, { where: { id: foundCustomer.id } });
+      foundCustomer.serviceType = payload.serviceType;
+      return responseService.OK(reply, { value: foundCustomer, message: `Update service type` });
+    }
+    catch (e) {
+      console.log('Error', e);
+      if(transaction) {
+        await transaction.rollback();
+      }
+      return responseService.InternalServerError(reply, e);
+    }
+  },
   getStudentData: async (request, reply) =>{
     let language = request.headers.language;
     try {

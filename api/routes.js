@@ -702,6 +702,15 @@ module.exports = [
    }
   },
   {
+    path: '/api/setCustomerServiceType/{id}',
+    method: 'PUT',
+    options: {
+      description: 'set service type',
+      auth: false,
+      handler: webAuthenticationController.setServiceType
+   }
+  },
+  {
     path: '/api/signIn',
     method: 'POST',
     options: {
