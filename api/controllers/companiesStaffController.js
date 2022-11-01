@@ -72,7 +72,7 @@ module.exports = {
             (select po.long from points po where po.id = b.endPoint) endPointLong from single_trips s,
              trips t, buses_locations b, points p , 
            trips_days td where s.tripId = td.id and t.id = td.tripId and t.busRouteId = b.id and 
-           b.startPoint = p.id and busId== ${bus[0].id}`, { type: QueryTypes.SELECT });
+           b.startPoint = p.id and busId= ${bus[0].id}`, { type: QueryTypes.SELECT });
           
            for(let i= 0; i < trip.length; i++){
             let p= await models.sequelize.query(`select point, lat, p.long
