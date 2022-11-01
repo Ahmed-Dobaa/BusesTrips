@@ -90,12 +90,12 @@ module.exports = {
             `, { type: QueryTypes.SELECT });
 
             trip[i].routeName = route[0].routeName;
-            trip[i].startPoint = startPoint.point;
-            trip[i].endPoint = endPoint.point;
-            trip[i].startPointLat = startPoint.lat;
-            trip[i].startPointLong = startPoint.long;
-            trip[i].endPointLat = endPoint.lat;
-            trip[i].endPointLong = endPoint.long;
+            trip[i].startPoint = startPoint[0].point;
+            trip[i].endPoint = endPoint[0].point;
+            trip[i].startPointLat = startPoint[0].lat;
+            trip[i].startPointLong = startPoint[0].long;
+            trip[i].endPointLat = endPoint[0].lat;
+            trip[i].endPointLong = endPoint[0].long;
             trip[i]["routePoints"]= p;
            }
            console.log("trip---------",trip)
