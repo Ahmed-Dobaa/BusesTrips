@@ -73,15 +73,15 @@ module.exports = {
               console.log("trip---------",trip)
               // s.tripId= t.id and t.busRouteId = b.id and b.startPoint = p.id
               // and 
-           for(let i= 0; i < trip.length; i++){
-            let p= await models.sequelize.query(`select point, lat, p.long
-             from buses_locations_points l, points p
-             where l.pointId = p.id
-             and bus_location_id= ${trip[i].busRouteId}
-            `, { type: QueryTypes.SELECT });
-            console.log("p-----",p)
-            trip[i]["routePoints"]= p;
-           }
+          //  for(let i= 0; i < trip.length; i++){
+          //   let p= await models.sequelize.query(`select point, lat, p.long
+          //    from buses_locations_points l, points p
+          //    where l.pointId = p.id
+          //    and bus_location_id= ${trip[i].busRouteId}
+          //   `, { type: QueryTypes.SELECT });
+          //   console.log("p-----",p)
+          //   trip[i]["routePoints"]= p;
+          //  }
            result= {driverInfo: staff[0], busInfo: bus[0], trips: trip}
            return responseService.OK(reply, { value: result, message: "Driver Data" });
         }else{
