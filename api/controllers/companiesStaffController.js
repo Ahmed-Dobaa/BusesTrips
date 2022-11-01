@@ -79,6 +79,23 @@ module.exports = {
              where l.pointId = p.id
              and bus_location_id= ${trip[i].routeId}
             `, { type: QueryTypes.SELECT });
+
+            let route = await models.sequelize.query(`SELECT routeName,startPoint,endPoint FROM buses_locations WHERE id= ${trip[i].routeId}
+            `, { type: QueryTypes.SELECT });
+
+            let startPoint =  await models.sequelize.query(`SELECT * FROM points WHERE id= ${route.startPoint}
+            `, { type: QueryTypes.SELECT });
+
+            let endPoint =  await models.sequelize.query(`SELECT * FROM points WHERE id= ${route.endPoint}
+            `, { type: QueryTypes.SELECT });
+
+            trip[i].routeName = route.routeName;
+            trip[i].startPoint = startPoint.point;
+            trip[i].endPoint = endPoint.point;
+            trip[i].startPointLat = startPoint.lat;
+            trip[i].startPointLong = startPoint.long;
+            trip[i].endPointLat = endPoint.lat;
+            trip[i].endPointLong = endPoint.long;
             trip[i]["routePoints"]= p;
            }
            console.log("trip---------",trip)
