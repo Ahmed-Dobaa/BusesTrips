@@ -20,7 +20,11 @@ module.exports = {
       let singleTrip = null;
         if("id" in payload){
           if(payload.id === null){  // create new single trip
-            singleTrip = await models.single_trips.create(payload, {transaction});
+            const dates = payload.date;
+            for(let i=0;i<dates.length;i++){
+              payload.date = dates[i];
+              singleTrip = await models.single_trips.create(payload, {transaction});
+            }
           }else{
             await models.single_trips.update(payload, {where: {id: payload.id }}, {transaction});
           }
