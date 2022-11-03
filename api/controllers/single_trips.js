@@ -50,7 +50,7 @@ module.exports = {
     let language = request.headers.language;
     let singleTrips = null;
      try {
-      singleTrips = await models.sequelize.query(` SELECT s.id, busId, b.busPlateNumber,
+      singleTrips = await models.sequelize.query(` SELECT s.id,s.tripId, busId, b.busPlateNumber,
                   Concat (day, ' from ', t.from, ' to ', t.to) trip,
                   s.date, routeId, bl.routeName,
                   startPoint,
