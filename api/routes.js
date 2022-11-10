@@ -13,6 +13,7 @@ const busesController = require('./controllers/busesController');
 const busesRoutesController = require('./controllers/busesLocationsController');
 const tripsController = require('./controllers/trips');
 const pointsController = require('./controllers/points');
+const reservationController = require('./controllers/web/reservationController');
 const singleTripsController = require('./controllers/single_trips');
 
 /////////////////// *** mobile controller *** ///////////////////////
@@ -448,6 +449,33 @@ module.exports = [
     }
   },
   {
+    path: '/web/reservation',
+    method: 'GET',
+    options: {
+      description: 'Get all reservation',
+      auth: false,
+      handler: reservationController.reservation
+    }
+  },
+  {
+    path: '/web/updateReservation',
+    method: 'POST',
+    options: {
+      description: 'Update reservation',
+      auth: false,
+      handler: reservationController.updateReservation
+    }
+  },
+  {
+    path: '/web/deleteReservation/{id}',
+    method: 'DELETE',
+    options: {
+      description: 'delete reservation',
+      auth: false,
+      handler: reservationController.deleteReservation
+    }
+  },
+  {
     path: '/web/getPoints/{companyId}',
     method: 'GET',
     options: {
@@ -709,15 +737,6 @@ module.exports = [
       description: 'register new customer',
       auth: false,
       handler: webAuthenticationController.getStudentData
-   }
-  },
-  {
-    path: '/api/setCustomerServiceType/{id}',
-    method: 'PUT',
-    options: {
-      description: 'set service type',
-      auth: false,
-      handler: webAuthenticationController.setServiceType
    }
   },
   {
