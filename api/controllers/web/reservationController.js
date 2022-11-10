@@ -4,24 +4,26 @@ const path = require('path');
 const _ = require('lodash');
 const models = require(path.join(__dirname, '../../models/index'));
 const responseService = require(path.join(__dirname, '../../services/responseService'));
-const trips = require('../trips');
+const { QueryTypes } = require('sequelize');
+
 
 module.exports = {
    
     reservation: async (request, reply) => {
+        let language = request.headers.language;
+        let reservations=null;
         try {
          console.log("inside...........");
           reservations = await models.sequelize.query(`SELECT r.id,r.userId customerId,r.tripId,
-          (SELECT tripId FROM single_trips s WHERE s.id = r.tripId) tripDayId, 
-          (SELECT tripId FROM trips_days td WHERE td.id = tripDayId) tripIdR, 
-          (SELECT name FROM trips t WHERE t.id = tripIdR ) tripName, 
-          (SELECT name from customers c WHERE c.id = r.userId) customerName, 
-          (SELECT email from customers c WHERE c.id = r.userId) email,
-           (SELECT phoneNumber from customers c WHERE c.id = r.userId  AND deletedAt is null) phoneNumber from reservation r`,{ type: QueryTypes.SELECT });
+          (SELECT name FROM trips t WHERE t.id = (SELECT tripId FROM trips_days td WHERE td.id = (SELECT tripId FROM single_trips s WHERE s.id = r.tripId) ) ) tripName, 
+              (SELECT name from customers c WHERE c.id = r.userId) customerName, 
+              (SELECT email from customers c WHERE c.id = r.userId) email,
+               (SELECT phoneNumber from customers c WHERE c.id = r.userId  AND deletedAt is null) phoneNumber from reservation r`,{ type: QueryTypes.SELECT });
            console.log("reservations--------------",reservations);
           return responseService.OK(reply, { value: reservations, message: 'Reservations List' });
         }
         catch (e) {
+            console.log("errorrr---",e);
           return responseService.InternalServerError(reply, e);
         }
     },
