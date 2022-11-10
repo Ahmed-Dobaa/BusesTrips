@@ -30,11 +30,12 @@ module.exports = {
 
     updateReservation: async(request,reply)=>{
         const { payload } = request;
+        console.log("payload------",payload);
         transaction = await models.sequelize.transaction();
         try{
-          
+          console.log("inside------");
             let reservation =  await models.reservation.update(payload, {where: {id: payload.id }}, {transaction});
-            
+            console.log("rrese----",reservation);
             await transaction.commit();
             return responseService.OK(reply, {value: reservation, message: 'This reservation updated successfully' });
         }
@@ -54,7 +55,7 @@ module.exports = {
             const deleted = await models.reservation.destroy({where: {id: request.params.id }});
     
             await transaction.commit();
-            return responseService.OK(reply, {value: deleted, message: 'This Point deleted successfully' });
+            return responseService.OK(reply, {value: deleted, message: 'This reservation deleted successfully' });
     
           } catch (error) {
             if(transaction) {
