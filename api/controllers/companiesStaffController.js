@@ -62,22 +62,29 @@ module.exports = {
                           (select lookupDetailName from lookup_details l where l.id= seatsStructure) seatsStructure
                           from buses where driverId= ${staff[0].id}`, { type: QueryTypes.SELECT });
 
-           trip= await models.sequelize.query(`select tripId, name tripName, busRouteId, routeName,
-              p.point startPoint, (select point from points po where po.id = b.endPoint) endPoint,
-              p.lat startPointLat, p.long startPointLong,
-              (select lat from points po where po.id = b.endPoint) endPointLat,
-              (select po.long from points po where po.id = b.endPoint) endPointLong
-              from single_trips s, trips t, buses_locations b, points p
-              where s.tripId= t.id and t.busRouteId = b.id and b.startPoint = p.id
-              and busId= ${bus[0].id}`, { type: QueryTypes.SELECT });
+          //  trip= await models.sequelize.query(`select * from single_trips where busId= ${bus[0].id}`, { type: QueryTypes.SELECT });
+           
+           trip= await models.sequelize.query(`select s.tripId , name tripName, busRouteId, routeName,
+            p.point startPoint, 
+           (select point from points po where po.id = b.endPoint) endPoint, p.lat startPointLat, 
+           p.long startPointLong,
+            (select lat from points po where po.id = b.endPoint) endPointLat, 
+            (select po.long from points po where po.id = b.endPoint) endPointLong from single_trips s,
+             trips t, buses_locations b, points p , 
+           trips_days td where s.tripId = td.id and t.id = td.tripId and t.busRouteId = b.id and 
+           b.startPoint = p.id and busId= ${bus[0].id}`, { type: QueryTypes.SELECT });
+          
            for(let i= 0; i < trip.length; i++){
             let p= await models.sequelize.query(`select point, lat, p.long
              from buses_locations_points l, points p
              where l.pointId = p.id
              and bus_location_id= ${trip[i].busRouteId}
             `, { type: QueryTypes.SELECT });
+
             trip[i]["routePoints"]= p;
            }
+           console.log("trip---------",trip)
+
            result= {driverInfo: staff[0], busInfo: bus[0], trips: trip}
            return responseService.OK(reply, { value: result, message: "Driver Data" });
         }else{

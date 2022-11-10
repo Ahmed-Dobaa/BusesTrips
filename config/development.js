@@ -25,10 +25,10 @@ MIIFNTCCBB2gAwIBAgISA+INeYxsxiWpCB4eTSEX5GTCMA0GCSqGSIb3DQEBCwUAMDIxCzAJBgNVBAYT
     abortEarly: false
   },
   database: {
-    database: 'allenap_bus', //'sql5517471', //'sql5490974', //
-    username: 'allenap_bus', //'sql5517471', //'allenap_bus', //'sql5490974', //
-    password: 'x7bw4ROf9dUT', //'kwFAUGGlP1', //8pjHfFzZEY',
-    host: 'localhost', //'sql5.freemysqlhosting.net', //sql5.freemysqlhosting.net',
+    database: 'allenap_bus', //'sql5529114', //'sql5490974', //
+    username: 'allenap_bus', //'sql5529114', //'allenap_bus', //'sql5490974', //
+    password: 'x7bw4ROf9dUT', //'ArsvtyCUD3', //8pjHfFzZEY',
+    host: 'localhost', //'sql5.freesqldatabase.com', //sql5.freemysqlhosting.net',
     port: 3306,
     dialect: 'mysql',
     debug: true,
