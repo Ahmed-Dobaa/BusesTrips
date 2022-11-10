@@ -442,7 +442,18 @@ module.exports = [
     method: 'POST',
     options: {
       payload: { allow: ['application/json'], },
-      description: 'Create new buses routes',
+      description: 'Create new buses reservations',
+      auth: false,
+      // validate: companySchema.createCompany,
+      handler: pointsController.reservation
+    }
+  },
+  {
+    path: '/web/createReservation',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new reservations',
       auth: false,
       // validate: companySchema.createCompany,
       handler: pointsController.reservation

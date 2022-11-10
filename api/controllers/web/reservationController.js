@@ -30,13 +30,10 @@ module.exports = {
 
     updateReservation: async(request,reply)=>{
         const { payload } = request;
-        console.log("payload------",payload);
         let transaction;
         try{
          transaction = await models.sequelize.transaction();
-          console.log("inside------");
-             await models.reservation.update(payload, {where: {id: payload.id }}, {transaction});
-             let reservation = models.reservation.query(`select * from reservation where id=${payload.id}`);
+            let reservation =  await models.reservation.update(payload, {where: {id: payload.id }}, {transaction});
             console.log("rrese----",reservation);
             await transaction.commit();
             return responseService.OK(reply, {value: reservation, message: 'This reservation updated successfully' });
