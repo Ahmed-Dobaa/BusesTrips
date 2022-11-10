@@ -10,14 +10,16 @@ module.exports = {
    
     reservation: async (request, reply) => {
         try {
-          trips = await models.sequelize.query(`SELECT r.id,r.userId customerId,r.tripId,
+         console.log("inside...........");
+          reservations = await models.sequelize.query(`SELECT r.id,r.userId customerId,r.tripId,
           (SELECT tripId FROM single_trips s WHERE s.id = r.tripId) tripDayId, 
           (SELECT tripId FROM trips_days td WHERE td.id = tripDayId) tripIdR, 
           (SELECT name FROM trips t WHERE t.id = tripIdR ) tripName, 
           (SELECT name from customers c WHERE c.id = r.userId) customerName, 
           (SELECT email from customers c WHERE c.id = r.userId) email,
-           (SELECT phoneNumber from customers c WHERE c.id = r.userId  AND deletedAt = null) phoneNumber from reservation r;`);
-          return responseService.OK(reply, { value: trips, message: 'Reservations List' });
+           (SELECT phoneNumber from customers c WHERE c.id = r.userId  AND deletedAt is null) phoneNumber from reservation r`,{ type: QueryTypes.SELECT });
+           console.log("reservations--------------",reservations);
+          return responseService.OK(reply, { value: reservations, message: 'Reservations List' });
         }
         catch (e) {
           return responseService.InternalServerError(reply, e);
