@@ -13,13 +13,11 @@ module.exports = {
         let language = request.headers.language;
         let reservations=null;
         try {
-         console.log("inside...........");
-          reservations = await models.sequelize.query(`SELECT r.id,r.userId customerId,r.tripId,
+          reservations = await models.sequelize.query(`SELECT r.id,r.status,r.userId customerId,r.tripId,
           (SELECT name FROM trips t WHERE t.id = (SELECT tripId FROM trips_days td WHERE td.id = (SELECT tripId FROM single_trips s WHERE s.id = r.tripId) ) ) tripName, 
               (SELECT name from customers c WHERE c.id = r.userId) customerName, 
               (SELECT email from customers c WHERE c.id = r.userId) email,
                (SELECT phoneNumber from customers c WHERE c.id = r.userId  AND deletedAt is null) phoneNumber from reservation r`,{ type: QueryTypes.SELECT });
-           console.log("reservations--------------",reservations);
           return responseService.OK(reply, { value: reservations, message: 'Reservations List' });
         }
         catch (e) {
