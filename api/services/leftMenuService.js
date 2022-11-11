@@ -15,6 +15,7 @@ module.exports = {
       let employees = [];
       let trips = [];
       let routes= [];
+      let reservations= [];
 
 
       const mainScreens = await models.main_screens.findAll();
@@ -102,6 +103,13 @@ module.exports = {
         url: leftMenu[i].url
     })
    }
+     if(leftMenu[i].relatedTo === 11){
+      reservations.push({
+        name: leftMenu[i].permissionName,
+        icon: leftMenu[i].icon,
+        url: leftMenu[i].url
+    })
+   }
 
 
       }
@@ -163,6 +171,13 @@ module.exports = {
           name: mainScreens[8].mainTitleName,
           icon: mainScreens[8].mainScreenIcon,
           children: routes
+        })
+      }
+      if(reservations.length != 0){
+        menu.push({
+          name: mainScreens[9].mainTitleName,
+          icon: mainScreens[9].mainScreenIcon,
+          children: reservations
         })
       }
 
