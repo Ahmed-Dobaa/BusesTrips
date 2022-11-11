@@ -17,7 +17,7 @@ module.exports = {
           (SELECT name FROM trips t WHERE t.id = (SELECT tripId FROM trips_days td WHERE td.id = (SELECT tripId FROM single_trips s WHERE s.id = r.tripId) ) ) tripName, 
               (SELECT name from customers c WHERE c.id = r.userId) customerName, 
               (SELECT email from customers c WHERE c.id = r.userId) email,
-               (SELECT phoneNumber from customers c WHERE c.id = r.userId  AND deletedAt is null) phoneNumber from reservation r`,{ type: QueryTypes.SELECT });
+               (SELECT phoneNumber from customers c WHERE c.id = r.userId) phoneNumber from reservation r WHERE r.deletedAt is null`,{ type: QueryTypes.SELECT });
           return responseService.OK(reply, { value: reservations, message: 'Reservations List' });
         }
         catch (e) {
