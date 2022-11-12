@@ -102,10 +102,10 @@ module.exports = {
      try {
       transaction = await models.sequelize.transaction();
       console.log("payload",payload);
-      const customerFound = await models.customers.findAll({where: {customerId: request.params.customerId }});
+      const customerFound = await models.customers.findAll({where: {id: request.params.customerId }});
       console.log("customerFound",customerFound);
       if(!_.isEmpty(customerFound)){
-        const customerUpdated = await models.customers.update(payload, {where: {customerId: request.params.customerId , channel: 'W'}}, { transaction });
+        const customerUpdated = await models.customers.update(payload, {where: {id: request.params.customerId , channel: 'W'}}, { transaction });
         await transaction.commit();
         return responseService.OK(reply, {value: customerUpdated, message: "Service type updated successfully" });
       }
