@@ -57,7 +57,7 @@ module.exports = {
       const { payload } = request;
       created = await models.reservation.create(payload, {transaction});
       await transaction.commit();
-      return responseService.OK(reply, { value: created, message: 'Reservation done successfully' });
+      return responseService.OK(reply, { value: created, message: 'Reservation done successfully,but not confirmed!' });
     }
     catch (e) {
       console.log(e)

@@ -449,6 +449,17 @@ module.exports = [
     }
   },
   {
+    path: '/api/updateReservation',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Update reservation',
+      auth: false,
+      // validate: companySchema.createCompany,
+      handler: pointsController.updateStatusOfReservationAndIncreaseCount
+    }
+  },
+  {
     path: '/web/createReservation',
     method: 'POST',
     options: {
