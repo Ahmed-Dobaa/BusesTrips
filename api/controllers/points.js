@@ -55,10 +55,6 @@ module.exports = {
     try {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
-      tripCount = await models.sequelize.query(`SELECT count FROM trips_days WHERE id = ${payload.tripId};`)
-      console.log("tripCount",tripCount[0]);
-      updateTripCount = await models.trips_days.update({count:tripCount[0].count + 1}, {where: {id: payload.tripId}},{ transaction });
-      console.log("updateTripCount",updateTripCount);
       created = await models.reservation.create(payload, {transaction});
       await transaction.commit();
       return responseService.OK(reply, { value: created, message: 'Reservation done successfully' });
@@ -72,6 +68,26 @@ module.exports = {
     }
   },
 
+  updateStatusOfReservationAndIncreaseCount: async (request,reply)=>{
+    let transaction;
+    try {
+      transaction = await models.sequelize.transaction();
+      const { payload } = request;
+      console.log("payload",payload);
+      await models.trips_days.update({count:payload.count}, {where: {id: payload.tripId}},{ transaction });
+      console.log("updateTripCount",updateTripCount);
+      await models.reservation.update({status:payload.status}, {where: {id: payload.reservationId}},{ transaction });
+      await transaction.commit();
+      return responseService.OK(reply, { value: [], message: 'Reservation confirmed successfully' });
+    }
+    catch (e) {
+      console.log(e)
+      if(transaction) {
+        await transaction.rollback();
+      }
+      return responseService.InternalServerError(reply, e);
+    }
+  },
   getPoints: async (request, reply) => {
     let language = request.headers.language;
     let locations = null;
