@@ -75,7 +75,6 @@ module.exports = {
       const { payload } = request;
       console.log("payload",payload);
       await models.trips_days.update({count:payload.count}, {where: {id: payload.tripId}},{ transaction });
-      console.log("updateTripCount",updateTripCount);
       await models.reservation.update({status:payload.status}, {where: {id: payload.reservationId}},{ transaction });
       await transaction.commit();
       return responseService.OK(reply, { value: [], message: 'Reservation confirmed successfully' });
