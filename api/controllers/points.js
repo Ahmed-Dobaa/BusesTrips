@@ -55,7 +55,7 @@ module.exports = {
     try {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
-      tripCount = await models.trips_days.query(`SELECT count FROM trips_days WHERE id = ${payload.tripId};`)
+      tripCount = await models.sequelize.query(`SELECT count FROM trips_days WHERE id = ${payload.tripId};`)
       console.log("tripCount",tripCount[0]);
       updateTripCount = await models.trips_days.update({count:tripCount[0].count + 1}, {where: {id: payload.tripId}},{ transaction });
       console.log("updateTripCount",updateTripCount);
