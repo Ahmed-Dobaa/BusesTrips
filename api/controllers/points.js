@@ -51,11 +51,15 @@ module.exports = {
   reservation: async (request, reply) => {
     let transaction;
     let created = null;
+    let tripCount = null;
     try {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
-
-                created = await models.reservation.create(payload, {transaction});
+      tripCount = await models.trips_days.query(`SELECT count FROM trips_days WHERE id = ${payload.tripId};`)
+      console.log("tripCount",tripCount[0]);
+      updateTripCount = await models.trips_days.update({count:tripCount[0].count + 1}, {where: {id: payload.tripId}},{ transaction });
+      console.log("updateTripCount",updateTripCount);
+      created = await models.reservation.create(payload, {transaction});
       await transaction.commit();
       return responseService.OK(reply, { value: created, message: 'Reservation done successfully' });
     }
