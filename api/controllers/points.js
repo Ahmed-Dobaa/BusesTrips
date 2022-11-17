@@ -184,7 +184,7 @@ module.exports = {
           `, { type: QueryTypes.SELECT });
 
           for(let i= 0; i < points.length; i++){
-            let routePoints = await models.sequelize.query(`SELECT pointId, p.point
+            let routePoints = await models.sequelize.query(`SELECT pointId, p.point,p.lat,p.long,
                         from buses_locations_points b, points p
                         where bus_location_id= ${points[i].routeId}
                         and b.pointId = p.id
@@ -238,7 +238,7 @@ module.exports = {
           console.log(points)
         for(let i= 0; i < points.length; i++){
           let route = await models.sequelize.query(`
-          SELECT pointId, p.point
+          SELECT pointId, p.point,p.lat,p.long,
           from buses_locations_points b, points p
           where bus_location_id= ${points[i].routeId}
           and b.pointId = p.id
@@ -275,7 +275,7 @@ module.exports = {
           `, { type: QueryTypes.SELECT });
           for(let i= 0; i < points.length; i++){
             let route = await models.sequelize.query(`
-            SELECT pointId, p.point
+            SELECT pointId, p.point,p.lat,p.long,
             from buses_locations_points b, points p
             where bus_location_id= ${points[i].id}
             and b.pointId = p.id
