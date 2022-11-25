@@ -51,10 +51,14 @@ module.exports = {
   reservation: async (request, reply) => {
     let transaction;
     let created = null;
-    let tripCount = null;
+    let pickupPoint = null;
     try {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
+      pickupPoint = await models.sequelize.query(`select pickup from customers where id = ${payload.userId} and deletedAt is null`, { type: QueryTypes.SELECT });
+      console.log("pickupPoint",pickupPoint)
+      payload.pickup = pickupPoint[0];
+      console.log("payload---",payload)
       created = await models.reservation.create(payload, {transaction});
       await transaction.commit();
       return responseService.OK(reply, { value: created, message: 'Reservation done successfully,but not confirmed!' });
