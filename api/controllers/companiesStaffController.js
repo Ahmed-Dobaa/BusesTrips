@@ -6,6 +6,7 @@ const models = require(path.join(__dirname, '../models/index'));
 const errorService = require(path.join(__dirname, '../services/errorService'));
 const responseService = require(path.join(__dirname, '../services/responseService'));
 const helperService = require(path.join(__dirname, '../services/helperService'));
+const Joi = require('joi');
 const { QueryTypes } = require('sequelize');
 const Boom = require('boom');
 
@@ -52,7 +53,8 @@ module.exports = {
   driverLogin: async (request, reply) => {
     let language = request.headers.language;
     let staff = null, bus= null, trip, result;
-    let today = new Date();
+    let today = Joi.date().format('YYYY-MM-DD');
+    
      try {
          staff= await models.sequelize.query(`SELECT id, name, job as job,
                    (select lookupDetailName from lookup_details l where l.id = job) jobName, phoneNumber, companyId
@@ -73,7 +75,7 @@ module.exports = {
             (select po.long from points po where po.id = b.endPoint) endPointLong from single_trips s,
              trips t, buses_locations b, points p , 
            trips_days td where s.tripId = td.id and t.id = td.tripId and t.busRouteId = b.id and 
-           b.startPoint = p.id and s.date < '2022-11-15' and busId= ${bus[0].id}`, { type: QueryTypes.SELECT });
+           b.startPoint = p.id and s.date > ${today} and busId= ${bus[0].id}`, { type: QueryTypes.SELECT });
           
            for(let i= 0; i < trip.length; i++){
             let p= await models.sequelize.query(`select point, lat, p.long
