@@ -57,7 +57,7 @@ module.exports = {
       const { payload } = request;
       pickupPoint = await models.sequelize.query(`select pickup from customers where id = ${payload.userId} and deletedAt is null`, { type: QueryTypes.SELECT });
       console.log("pickupPoint",pickupPoint)
-      payload.pickup = pickupPoint[0];
+      payload.pickup = pickupPoint[0].pickup;
       console.log("payload---",payload)
       created = await models.reservation.create(payload, {transaction});
       await transaction.commit();
