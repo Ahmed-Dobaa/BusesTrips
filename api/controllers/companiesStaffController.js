@@ -78,13 +78,16 @@ module.exports = {
            b.startPoint = p.id and s.date >= '${today}' and busId= ${bus[0].id}`, { type: QueryTypes.SELECT });
           
            for(let i= 0; i < trip.length; i++){
-            let p= await models.sequelize.query(`select point, lat, p.long
+            let p= await models.sequelize.query(`select point, lat, p.long,p.id
              from buses_locations_points l, points p
              where l.pointId = p.id
              and bus_location_id= ${trip[i].busRouteId}
             `, { type: QueryTypes.SELECT });
-
+            let reservations = await models.sequelize.query(`SELECT * FROM reservation WHERE tripId = ${trip[i].tripId} and deletedAt is null `, { type: QueryTypes.SELECT })
             trip[i]["routePoints"]= p;
+            console.log('reservations.length-----',reservations.length);
+            console.log('trip[i]["routePoints"]-----',trip[i]["routePoints"]);
+            trip[i].reservations= reservations.length;
            }
            console.log("trip---------",trip)
 
