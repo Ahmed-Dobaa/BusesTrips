@@ -89,7 +89,7 @@ module.exports = {
             console.log('trip[i]["routePoints"]-----',trip[i]["routePoints"]);
             trip[i].reservations= reservations.length;
             for(let j =0;j<p.length;j++){
-              let countArr = await models.sequelize.query(`SELECT * FROM reservation WHERE pickup=${p.id} and tripId=${trip[i].tripId} and deletedAt is null`, { type: QueryTypes.SELECT });
+              let countArr = await models.sequelize.query(`SELECT * FROM reservation WHERE pickup=${p[j].id} and tripId=${trip[i].tripId} and deletedAt is null`, { type: QueryTypes.SELECT });
               console.log("countArr",countArr);
               console.log("countArrLen",countArr.length);
               trip[i]["routePoints"][j].passangers = countArr.length;
