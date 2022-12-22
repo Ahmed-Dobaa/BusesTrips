@@ -26,7 +26,7 @@ const server = Hapi.server({
   },
   host: config.connection.host,
   port: process.env.PORT || config.connection.port,
-  tls: config.connection.tls,
+  // tls: config.connection.tls,
 });
 const getErrorParts = function (error) {
   const path = Array.isArray(error.path) ? error.path[0] : error.path;
