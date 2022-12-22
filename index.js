@@ -2,7 +2,7 @@
 
 const Hapi = require('hapi');
 const Relish = require('relish')({ stripQuotes: true });
-const config = require('./config/development');
+const config = require('config');
 const routes = require('./api/routes');
 const sequelize = require('sequelize');
 const Boom = require('boom');
