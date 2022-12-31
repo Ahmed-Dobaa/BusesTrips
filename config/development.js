@@ -70,8 +70,7 @@ uyBb4twGn6EB1Z4rbBp2z7v0j8h+7kN/oDoYUpWJN89wTocSSP8m1KKUSwSxSYR2
 PA2AXssZyTpa0AhgbZoz+/NpO6/K94cjtjht3mBnd1RvNBD+FkH9oD5FBnn8qr4G
 5fe2BWPfFTQmwippWr0LdtDHgkXLA151YitBRGizfN/9+V7PssLN2itWFpWWHQpV
 S2wTZZMbSyZNTDnrcbLZb9bg6836mrWsIN8=
------END CERTIFICATE-----
-      `,
+-----END CERTIFICATE-----`,
     },
   },
   joi: {
