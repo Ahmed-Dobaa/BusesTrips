@@ -33,8 +33,7 @@ module.exports = {
       6tkpjP7lvXUWO/KOMdb7+dcVLmiIi4jk289iAiawLwKBgGC42qlNZRCKJ2ikHRY9
       ULvaPFxxBFrqwmCHINUDC638EIkqApx+nf+48U52jctcSSmkn4LpOCpxLr/f5Pj0
       Dk7EsNDKyBsBn/5CLB/MruQIGXGDjaO7FuyMx7Ph3Pd6AEsiaDGV2YK0f61cQQb7
-      Pz7vm2xKVRWk1lvxOmSrVxq9
-      -----END PRIVATE KEY-----`,
+      Pz7vm2xKVRWk1lvxOmSrVxq9-----END PRIVATE KEY-----`,
       cert: `-----BEGIN CERTIFICATE-----
       MIIGRTCCBS2gAwIBAgIQZNZBqb27+u0xQw76BTrikDANBgkqhkiG9w0BAQsFADCB
       jzELMAkGA1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4G
@@ -69,8 +68,7 @@ module.exports = {
       XoDF+5RrfeCBo67yvQi1IIIlfz5SXmXbGKnYFp4Q+tcFtC+TAVEVGtTu++FXvjld
       loJKzjehiyXYZq1WxuMQr9+CkFU3D+p75ZtGccID1D1FCRoWTFg/q3dduamU/696
       GFZ9I1lG+UZy4X29q3AUMZfau9sPjI22qQtReLa8fmuUKFRJNYiqNHvosKJ4G39v
-      Nfhbh+4vVEbzj671vlycl5iHR5wtzlaohw==
-      -----END CERTIFICATE-----`,
+      Nfhbh+4vVEbzj671vlycl5iHR5wtzlaohw==-----END CERTIFICATE-----`,
     },
   },
   joi: {
