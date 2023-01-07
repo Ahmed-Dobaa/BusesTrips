@@ -192,7 +192,7 @@ module.exports = {
         menu.push({
           name: mainScreens[10].mainTitleName,
           icon: mainScreens[10].mainScreenIcon,
-          children: reservations
+          children: payment
         })
       }
 
