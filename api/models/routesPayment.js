@@ -22,7 +22,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true
     },
     paymentType: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     createdAt: {
