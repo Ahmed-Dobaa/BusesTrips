@@ -40,6 +40,7 @@ const customerSchema = require('./schemas/mobile/customer');
 const usersSettingsSchema = require('./schemas/mobile/usersSettings');
 
 const webLoginSchema = require('./schemas/web/login');
+const paymentController = require('./controllers/paymentController');
 
 module.exports = [
   {
@@ -403,6 +404,36 @@ module.exports = [
       auth: false,
       // validate: companySchema.createCompany,
       handler: pointsController.createPoints
+    }
+  },
+  {
+    path: '/web/createRoutePayment',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new route payment',
+      auth: false,
+      handler: paymentController.createRoutePayment
+    }
+  },
+  {
+    path: '/web/getRoutesPayment',
+    method: 'GET',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'get routes payment',
+      auth: false,
+      handler: paymentController.getRoutePayments
+    }
+  },
+  {
+    path: '/web/deleteRoutePayment/{id}',
+    method: 'DELETE',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'delete routes payment',
+      auth: false,
+      handler: paymentController.deleteRoutePayment
     }
   },
   {
