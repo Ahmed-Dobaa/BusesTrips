@@ -16,6 +16,7 @@ module.exports = {
       let trips = [];
       let routes= [];
       let reservations= [];
+      let payment= [];
 
 
       const mainScreens = await models.main_screens.findAll();
@@ -105,6 +106,13 @@ module.exports = {
    }
      if(leftMenu[i].relatedTo === 11){
       reservations.push({
+        name: leftMenu[i].permissionName,
+        icon: leftMenu[i].icon,
+        url: leftMenu[i].url
+    })
+   }
+     if(leftMenu[i].relatedTo === 12){
+      payment.push({
         name: leftMenu[i].permissionName,
         icon: leftMenu[i].icon,
         url: leftMenu[i].url
