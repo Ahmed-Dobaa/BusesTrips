@@ -33,8 +33,7 @@ module.exports = {
       e7uO5dZLOSOGAa+r0ppP8dlpWnqWXTKmtJnY7NECgYBboqqB/AK8NmvovuMWYzgK
       EWfl2fgjqHLcbvJbVSWJpu8xWCKydwZOtfnfdB5DZgppu6xfElO3vxyxZMf20UQI
       ekUyXigJKpG9qGQKss6er1Y96YL+aW7VFVjfQxISG8xXOTgsROQRvyCggb2TJy+Y
-      0Fzib/v+csGATystdr6ZGg==
-      -----END PRIVATE KEY-----`,
+      0Fzib/v+csGATystdr6ZGg==-----END PRIVATE KEY-----`,
       cert: `-----BEGIN CERTIFICATE-----
       MIIGRjCCBS6gAwIBAgIRAIqn9noO43mYjuRCmAS6IEIwDQYJKoZIhvcNAQELBQAw
       gY8xCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAO
@@ -69,8 +68,7 @@ module.exports = {
       4SYjeEFbyJO7eGFU9igEPjVFdNFImg1TFqyAYRq71IS+iqXDAgFzoGswtKYcph+z
       PA2AXssZyTpa0AhgbZoz+/NpO6/K94cjtjht3mBnd1RvNBD+FkH9oD5FBnn8qr4G
       5fe2BWPfFTQmwippWr0LdtDHgkXLA151YitBRGizfN/9+V7PssLN2itWFpWWHQpV
-      S2wTZZMbSyZNTDnrcbLZb9bg6836mrWsIN8=
-      -----END CERTIFICATE-----`,
+      S2wTZZMbSyZNTDnrcbLZb9bg6836mrWsIN8=-----END CERTIFICATE-----`,
     },
   },
   joi: {
