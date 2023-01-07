@@ -420,7 +420,6 @@ module.exports = [
     path: '/web/getRoutesPayment',
     method: 'GET',
     options: {
-      payload: { allow: ['application/json'], },
       description: 'get routes payment',
       auth: false,
       handler: paymentController.getRoutePayments
