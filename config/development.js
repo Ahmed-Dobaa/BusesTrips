@@ -7,7 +7,8 @@ module.exports = {
     port: process.env.PORT || 2051,
 
     tls: {
-      key: `MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDLsdJsOESE2uv0
+      key: `-----BEGIN PRIVATE KEY-----
+      MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDLsdJsOESE2uv0
       GZW+S5z/ILmV4aA9GGXlrFA2taZoNs2YFGZJOb48xpQM8Z/ycXGMgVJ6OfRRI52A
       f3v/wbRZO8UQ4ISTSXSMtUx+GDtHAP9YquFJ8Y74tuI1+XeA+5xkcu7Fq7bgLbUm
       O1S0b7l+QDqEqT9MeTUpU5snrihxbSe/ZUyiA6g3yVUpxh+yFQH8qc9fvI2U56G8
@@ -33,7 +34,7 @@ module.exports = {
       EWfl2fgjqHLcbvJbVSWJpu8xWCKydwZOtfnfdB5DZgppu6xfElO3vxyxZMf20UQI
       ekUyXigJKpG9qGQKss6er1Y96YL+aW7VFVjfQxISG8xXOTgsROQRvyCggb2TJy+Y
       0Fzib/v+csGATystdr6ZGg==
-      -----END PRIVATE KEY----`,
+      -----END PRIVATE KEY-----`,
       cert: `-----BEGIN CERTIFICATE-----
       MIIGRjCCBS6gAwIBAgIRAIqn9noO43mYjuRCmAS6IEIwDQYJKoZIhvcNAQELBQAw
       gY8xCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAO
