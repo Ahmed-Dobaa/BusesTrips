@@ -188,6 +188,13 @@ module.exports = {
           children: reservations
         })
       }
+      if(payment.length != 0){
+        menu.push({
+          name: mainScreens[10].mainTitleName,
+          icon: mainScreens[10].mainScreenIcon,
+          children: reservations
+        })
+      }
 
       return menu;
     }
