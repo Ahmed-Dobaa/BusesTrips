@@ -2,7 +2,7 @@
 
 
 module.exports = function (sequelize, DataTypes) {
-  const payment = sequelize.define('routes_payment', {
+  const routes_payment = sequelize.define('routes_payment', {
     id: {
       type: DataTypes.INTEGER(10).UNSIGNED,
       primaryKey: true,
@@ -43,5 +43,5 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true,
     }
   }, { tableName: 'routes_payment', paranoid: true });
-  return payment;
+  return routes_payment;
 };
