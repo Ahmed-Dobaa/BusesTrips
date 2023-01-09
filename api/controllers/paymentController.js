@@ -18,9 +18,9 @@ module.exports = {
       let RoutePayment = null;
         if("id" in payload){
           if(payload.id === null){  // create new RoutePayment
-             RoutePayment = await models.RoutePayments.create(payload, {transaction});
+             RoutePayment = await models.routesPayment.create(payload, {transaction});
           }else{
-            await models.RoutePayments.update(payload, {where: {id: payload.id }}, {transaction});
+            await models.routesPayment.update(payload, {where: {id: payload.id }}, {transaction});
           }
         }else{
            await transaction.rollback();
@@ -58,7 +58,7 @@ module.exports = {
     try {
       transaction = await models.sequelize.transaction();
 
-        const deletedPayment = await models.RoutePayments.destroy({where: {id: request.params.id }});
+        const deletedPayment = await models.routesPayment.destroy({where: {id: request.params.id }});
 
         await transaction.commit();
         return responseService.OK(reply, {value: deletedPayment, message: 'This Route Payment deleted successfully' });
