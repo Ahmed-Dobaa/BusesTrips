@@ -10,7 +10,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
     },
     routeName: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(100),
       allowNull: false
     },
     companyId: {
