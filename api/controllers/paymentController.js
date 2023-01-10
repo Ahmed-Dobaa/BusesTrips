@@ -12,12 +12,15 @@ module.exports = {
 
   createRoutePayment: async (request, reply) => {
     let transaction;
+    console.log("req",request.payload);
     try {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
       let RoutePayment = null;
         if("id" in payload){
+          console.log("inside create");
           if(payload.id === null){  // create new RoutePayment
+            console.log("models.routes_payment",models.routes_payment);
              RoutePayment = await models.routes_payment.create(payload, {transaction});
           }else{
             await models.routes_payment.update(payload, {where: {id: payload.id }}, {transaction});
@@ -41,10 +44,12 @@ module.exports = {
   },
 
   getRoutePayments: async (request, reply) => {
+    console.log("req",request);
     let language = request.headers.language;
      try {
-      routes_payment = await models.sequelize.query(` SELECT * FROM routes_payment where deletedAt is null`, { type: QueryTypes.SELECT });
-       return responseService.OK(reply, {value: routes_payment, message: "Company Routes Payments" });
+      const routes_payment = await models.sequelize.query(`SELECT * FROM routes_payment where deletedAt is null`, { type: QueryTypes.SELECT });
+      console.log("routes_payment",routes_payment); 
+      return responseService.OK(reply, {value: routes_payment, message: "Company Routes Payments" });
      } catch (e) {
       return responseService.InternalServerError(reply, e);
      }
@@ -52,14 +57,14 @@ module.exports = {
 
 
   deleteRoutePayment: async (request, reply) => {
-
+    console.log("req",request);
     let language = request.headers.language;
     let transaction;
     try {
       transaction = await models.sequelize.transaction();
 
         const deletedPayment = await models.routes_payment.destroy({where: {id: request.params.id }});
-
+        console.log("deleted",deletedPayment);
         await transaction.commit();
         return responseService.OK(reply, {value: deletedPayment, message: 'This Route Payment deleted successfully' });
 
