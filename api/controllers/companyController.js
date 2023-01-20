@@ -38,7 +38,7 @@ module.exports = {
         const privateAttributes = ['password', 'activationToken', 'secret', 'country'];
 
         createdUser = _.omit(createdUser.dataValues, privateAttributes);
-        await Mailer.sendUserActivationMail(request.payload.email, activationToken);
+        // await Mailer.sendUserActivationMail(request.payload.email, activationToken);
       }else{
 
         payload["companyId"] = request.payload.id;
