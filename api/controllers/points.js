@@ -251,7 +251,10 @@ module.exports = {
           and b.deletedAt is null
       `, { type: QueryTypes.SELECT });
 
+         let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].routeId} and b.deletedAt is null`, { type: QueryTypes.SELECT });
+
            points[i]["routePoints"]= route;
+           points[i]["routePayment"]= routePayment[0];
         }
 
         console.log("points from payload.type === 65" , points);
