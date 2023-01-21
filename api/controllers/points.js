@@ -264,17 +264,23 @@ module.exports = {
        }
 
        if(request.payload.type === 66 && request.payload.subsciptionType === 67){
-        let points = await models.sequelize.query(` select id, (select name from trips t where t.id = tripId) name,
-        (select busSeatsNumber from buses b where b.id= busId) busSeatsNumber,
+        let points = await models.sequelize.query(` select s.id, (select name from trips t where t.id = tripId) name,
+        (select busSeatsNumber from buses b where b.id= busId) busSeatsNumber,bl.routeName, bl.id routeId,
         (select lookupDetailName from lookup_details where id = (select seatsStructure from
           buses where id = busId)) seatsStructure,
           (select busPlateNumber from buses b where b.id= busId) busPlateNumber
-            from single_trips
+            from single_trips s , trips t2, buses_locations bl
             where date like '%${request.payload.startDate}%'
             and tripId in (select id from trips where busRouteId in (select id from buses_locations where startPoint= ${request.payload.startPoint}
-              and endPoint= ${request.payload.endPoint} ))
-            and deletedAt is null
+              and endPoint= ${request.payload.endPoint} )) and t2.busRouteId = bl.id
+            and s.deletedAt is null
           `, { type: QueryTypes.SELECT });
+
+          for(let i= 0; i < points.length; i++){
+  
+           let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].routeId} and deletedAt is null`, { type: QueryTypes.SELECT });
+             points[i]["routePayment"]= routePayment[0];
+          }
           console.log("points from payload.type === 66 and payload.subsciptionType === 67" , points);
 
           return responseService.OK(reply, {value: points, message: "Found university trips" });
