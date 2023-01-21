@@ -221,9 +221,11 @@ module.exports = {
           // // `, { type: QueryTypes.SELECT });
           // // trip.push
           // }
-        for(let i= 0; i < points.length; i++){
+        // for(let i= 0; i < points.length; i++){
 
-        }
+        // }
+        console.log("points from payload.type === 64 " , trip);
+
           return responseService.OK(reply, {value: trip, message: "Found trips" });
        }
 
@@ -252,6 +254,8 @@ module.exports = {
            points[i]["routePoints"]= route;
         }
 
+        console.log("points from payload.type === 65" , points);
+
           return responseService.OK(reply, {value: points, message: "Found trips" });
 
        }
@@ -268,6 +272,8 @@ module.exports = {
               and endPoint= ${request.payload.endPoint} ))
             and deletedAt is null
           `, { type: QueryTypes.SELECT });
+          console.log("points from payload.type === 66 and payload.subsciptionType === 67" , points);
+
           return responseService.OK(reply, {value: points, message: "Found university trips" });
        }
 
@@ -288,6 +294,7 @@ module.exports = {
 
              points[i]["routePoints"]= route;
           }
+          console.log("points from payload.type === 66 and payload.subsciptionType === 68" , points);
           return responseService.OK(reply, {value: points, message: "Found university routes" });
        }
      } catch (e) {
