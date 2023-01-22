@@ -308,7 +308,8 @@ module.exports = {
             and b.pointId = p.id
             and b.deletedAt is null
               `, { type: QueryTypes.SELECT });
-            let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].routeId} and deletedAt is null`, { type: QueryTypes.SELECT });
+              console.log('points uni sub ',points);
+            let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].id} and deletedAt is null`, { type: QueryTypes.SELECT });
              points[i]["routePayment"]= routePayment[0];
              points[i]["routePoints"]= route;
           }
