@@ -197,7 +197,7 @@ module.exports = {
               // points[i]['routePoints']= routePoints;
 
               let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].routeId} and deletedAt is null`, { type: QueryTypes.SELECT });
-              routePoints[i]["routePayment"]= routePayment[0];
+              points[i]["routePayment"]= routePayment[0];
 
           let days = await models.sequelize.query(`select * from trips_days where tripId= ${points[i].id}
               `, { type: QueryTypes.SELECT });
