@@ -187,6 +187,8 @@ module.exports = {
         where blp.startPoint = ${request.payload.startPoint} and blp.endPoint = ${request.payload.endPoint})
           `, { type: QueryTypes.SELECT });
 
+          console.log('points---',points)
+
           for(let i= 0; i < points.length; i++){
             let routePoints = await models.sequelize.query(`SELECT pointId, p.point,p.lat,p.long
                         from buses_locations_points b, points p
@@ -195,6 +197,8 @@ module.exports = {
                         and b.deletedAt is null
               `, { type: QueryTypes.SELECT });
               // points[i]['routePoints']= routePoints;
+             console.log('Point---',points[i])
+             console.log('routePoints---',routePoints)
 
               let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].routeId} and deletedAt is null`, { type: QueryTypes.SELECT });
               points[i]["routePayment"]= routePayment[0];
@@ -209,6 +213,7 @@ module.exports = {
               days[j]["name"]= points[i].name;
               days[j]["routeName"]= points[i].routeName;
               days[j]["routePoints"]= routePoints;
+              days[j]["routePayment"]= routePayment[0];
               trip.push(days[j])
              }
             console.log(trip)
@@ -303,7 +308,8 @@ module.exports = {
             and b.pointId = p.id
             and b.deletedAt is null
               `, { type: QueryTypes.SELECT });
-
+            let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].routeId} and deletedAt is null`, { type: QueryTypes.SELECT });
+             points[i]["routePayment"]= routePayment[0];
              points[i]["routePoints"]= route;
           }
           console.log("points from payload.type === 66 and payload.subsciptionType === 68" , points);
