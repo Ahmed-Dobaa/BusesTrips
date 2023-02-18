@@ -135,7 +135,7 @@ module.exports = {
   getTripDetailsBasedOnId: async (request,reply)=>{
     let language = request.headers.language;
      try {
-      tripDetails = await models.sequelize.query(`SELECT DISTINCT b.id as routId ,t.name as tripName, b.routeName, st.busId , 
+      const tripDetails = await models.sequelize.query(`SELECT DISTINCT b.id as routId ,t.name as tripName, b.routeName, st.busId , 
       bu.driverId, bu.supervisorId, bu.busPlateNumber , cf.name as driverName ,cf.phoneNumber as driverPhone
       from trips as t , buses_locations as b , single_trips st , buses bu , companies_staff cf
       WHERE t.id = (SELECT tripId from trips_days WHERE id = ${request.params.tripId}) AND b.id = 
