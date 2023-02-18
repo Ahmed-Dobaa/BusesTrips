@@ -130,6 +130,22 @@ module.exports = {
         }
       return responseService.InternalServerError(reply, error);
      }
+  },
+
+  getTripDetailsBasedOnId: async (request,reply)=>{
+    let language = request.headers.language;
+     try {
+      tripDetails = await models.sequelize.query(`SELECT DISTINCT b.id as routId ,t.name as tripName, b.routeName, st.busId , 
+      bu.driverId, bu.supervisorId, bu.busPlateNumber , cf.name as driverName ,cf.phoneNumber as driverPhone
+      from trips as t , buses_locations as b , single_trips st , buses bu , companies_staff cf
+      WHERE t.id = (SELECT tripId from trips_days WHERE id = ${request.params.tripId}) AND b.id = 
+      (SELECT busRouteId from trips WHERE id = (SELECT tripId from trips_days WHERE id = ${request.params.tripId})) AND 
+      st.tripId = ${request.params.tripId} AND bu.id = st.busId AND cf.id = bu.driverId`, { type: QueryTypes.SELECT });
+       console.log("tripDetails------",tripDetails)
+      return responseService.OK(reply, {value: tripDetails, message: "Trip Details" });
+     } catch (e) {
+      return responseService.InternalServerError(reply, e);
+     }
   }
 
 }

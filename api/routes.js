@@ -575,6 +575,15 @@ module.exports = [
     }
   },
   {
+    path: '/web/getTripsBasedId/{tripId}',
+    method: 'GET',
+    options: {
+      description: 'Get trip details',
+      auth: false,
+      handler: tripsController.getTripDetailsBasedOnId
+    }
+  },
+  {
     path: '/web/trips/{id}',
     method: 'DELETE',
     options: {
