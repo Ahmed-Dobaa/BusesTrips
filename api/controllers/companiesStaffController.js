@@ -68,7 +68,7 @@ module.exports = {
           //  trip= await models.sequelize.query(`select * from single_trips where busId= ${bus[0].id}`, { type: QueryTypes.SELECT });
            console.log("todayy---",today);
            trip= await models.sequelize.query(`select s.tripId , name tripName, busRouteId, routeName,s.date,
-            p.point startPoint, 
+            p.point startPoint, td.from fromH,td.to toH,
            (select point from points po where po.id = b.endPoint) endPoint, p.lat startPointLat, 
            p.long startPointLong,
             (select lat from points po where po.id = b.endPoint) endPointLat, 
