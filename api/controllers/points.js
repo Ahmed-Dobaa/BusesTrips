@@ -369,13 +369,13 @@ module.exports = {
                     tripDays[i]["routePoints"]= routePoints;
                    
              console.log("routePoints------",routePoints)
-             let startPoint = await models.sequelize.query(`SELECT pointId, p.point,p.lat,p.long
+             let startPoint = await models.sequelize.query(`SELECT id, p.point,p.lat,p.long
              from points p
              where id= ${tripDays[i].startsPoint}
    `, { type: QueryTypes.SELECT });
    tripDays[i]["startPoint"]= startPoint[0];
 
-   let endPoint = await models.sequelize.query(`SELECT pointId, p.point,p.lat,p.long
+   let endPoint = await models.sequelize.query(`SELECT id, p.point,p.lat,p.long
              from points p
              where id= ${tripDays[i].endsPoint}
    `, { type: QueryTypes.SELECT });
