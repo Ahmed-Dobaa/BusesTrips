@@ -341,8 +341,8 @@ module.exports = {
       let tripDays = await models.sequelize.query(`
         SELECT id, day, tripId, td.from as fromH, td.to as toH, (select name from trips t where t.id = td.tripId) tripName,
         (SELECT routeName from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) routName, (SELECT id from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) routeId,
-        (SELECT startPoint from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) startPoint,
-          (SELECT endPoint from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) endPoint
+        (SELECT startPoint from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) startsPoint,
+          (SELECT endPoint from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) endsPoint
         from allenap_bus.trips_days td
         where day = '${request.payload.day}' 
         and tripId in (SELECT id from allenap_bus.trips where busRouteId in 
@@ -370,18 +370,14 @@ module.exports = {
                    
              console.log("routePoints------",routePoints)
              let startPoint = await models.sequelize.query(`SELECT pointId, p.point,p.lat,p.long
-             from buses_locations_points b, points p
-             where bus_location_id= ${tripDays[i].startPoint}
-             and b.pointId = p.id
-             and b.deletedAt is null
+             from points p
+             where id= ${tripDays[i].startsPoint}
    `, { type: QueryTypes.SELECT });
    tripDays[i]["startPoint"]= startPoint[0];
 
    let endPoint = await models.sequelize.query(`SELECT pointId, p.point,p.lat,p.long
-             from buses_locations_points b, points p
-             where bus_location_id= ${tripDays[i].endPoint}
-             and b.pointId = p.id
-             and b.deletedAt is null
+             from points p
+             where id= ${tripDays[i].endsPoint}
    `, { type: QueryTypes.SELECT });
    tripDays[i]["endPoint"]= endPoint[0];
                                 let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${tripDays[i].routeId} and deletedAt is null`, { type: QueryTypes.SELECT });
