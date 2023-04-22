@@ -347,14 +347,14 @@ module.exports = {
           `, { type: QueryTypes.SELECT });
       }
 
-      return responseService.OK(reply, { value: trip, message: "Found trips" });
+      return responseService.OK(reply, { value: tripDays, message: "Found trips" });
 
     } catch (e) {
       console.log(e)
       return responseService.InternalServerError(reply, e);
     }
   },
-  
+
   reserveDates: async (request, reply) => {
     let transaction;
     let created = null;
