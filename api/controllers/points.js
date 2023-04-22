@@ -327,8 +327,11 @@ module.exports = {
     try {
 
       let tripDays = await models.sequelize.query(`
-          SELECT id, day, tripId, 'from', 'to', (select name from trips t where t.id = td.tripId) tripName,
-          (SELECT routeName from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) routName, (SELECT id from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) routeId from allenap_bus.trips_days td
+          SELECT id, day, tripId, `from`, `to`, (select name from trips t where t.id = td.tripId) tripName,
+          (SELECT routeName from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) routName, (SELECT id from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) routeId,
+          (SELECT startPoint from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) startPoint,
+          (SELECT endPoint from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) endPoint
+          from allenap_bus.trips_days td
           where day = '${request.payload.day}'
           and tripId in (SELECT id from allenap_bus.trips where busRouteId in 
                           (SELECT id from allenap_bus.buses_locations where startPoint =${request.payload.startPoint} and endPoint =${request.payload.endPoint} ) )
@@ -336,8 +339,11 @@ module.exports = {
 
       if (tripDays.length == 0) {
         tripDays = await models.sequelize.query(`
-        SELECT id, day, tripId, 'from', 'to', (select name from trips t where t.id = td.tripId) tripName,
-        (SELECT routeName from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) routName, (SELECT id from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) routeId from allenap_bus.trips_days td
+        SELECT id, day, tripId, `from`, `to`, (select name from trips t where t.id = td.tripId) tripName,
+        (SELECT routeName from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) routName, (SELECT id from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) routeId,
+        (SELECT startPoint from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) startPoint,
+          (SELECT endPoint from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) endPoint
+        from allenap_bus.trips_days td
         where day = '${request.payload.day}' 
         and tripId in (SELECT id from allenap_bus.trips where busRouteId in 
                         (
@@ -370,7 +376,7 @@ module.exports = {
              console.log("routePayment------",routePayment)
 
 
-          let days = await models.sequelize.query(`select * from trips_days where tripId= ${tripDays[i].id}
+          let days = await models.sequelize.query(`select * from trips_days where tripId= ${tripDays[i].tripId}
               `, { type: QueryTypes.SELECT });
               tripDays[i]["days"]= days;
 
