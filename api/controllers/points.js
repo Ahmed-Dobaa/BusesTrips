@@ -337,13 +337,17 @@ module.exports = {
 
       if (tripDays.length == 0) {
         tripDays = await models.sequelize.query(`
-             SELECT * from allenap_bus.trips_days
-             where day = '${request.payload.day}' 
-             and tripId in (SELECT id from allenap_bus.trips where busRouteId in 
-                             (SELECT a.bus_location_id
-             FROM allenap_bus.buses_locations_points a
-             JOIN allenap_bus.buses_locations_points b ON a.bus_location_id = b.bus_location_id
-             WHERE a.pointId = ${request.payload.startPoint} AND b.pointId = ${request.payload.endPoint} ) )             
+        SELECT * from allenap_bus.trips_days
+        where day = '${request.payload.day}' 
+        and tripId in (SELECT id from allenap_bus.trips where busRouteId in 
+        (SELECT bl.id
+        FROM buses_locations bl
+        INNER JOIN buses_locations_points blp1 ON bl.id = blp1.bus_location_id
+        INNER JOIN buses_locations_points blp2 ON bl.id = blp2.bus_location_id
+        WHERE blp1.pointId = ${request.payload.startPoint} AND blp2.pointId = ${request.payload.endPoint}
+        OR (bl.startPoint = ${request.payload.startPoint} and blp1.pointId = ${request.payload.endPoint} and blp2.pointId = ${request.payload.endPoint})
+        OR (bl.endPoint = ${request.payload.endPoint} and blp1.pointId = ${request.payload.startPoint} and blp2.pointId = ${request.payload.startPoint}) ) 
+                              )              
           `, { type: QueryTypes.SELECT });
       }
 
