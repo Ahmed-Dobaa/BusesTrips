@@ -350,6 +350,7 @@ module.exports = {
           `, { type: QueryTypes.SELECT });
       }
 
+      console.log("tripDays------",tripDays)
       for(let i = 0 ; i < tripDays.length; i++){
         let routePoints = await models.sequelize.query(`SELECT pointId, p.point,p.lat,p.long
                               from buses_locations_points b, points p
@@ -359,12 +360,20 @@ module.exports = {
                     `, { type: QueryTypes.SELECT });
                     tripDays[i]["routePoints"]= routePoints;
 
+      console.log("routePoints------",routePoints)
+
+
                                 let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${tripDays[i].routeId} and deletedAt is null`, { type: QueryTypes.SELECT });
                                 tripDays[i]["routePayment"]= routePayment[0];
+      console.log("routePayment------",routePayment)
+
 
           let days = await models.sequelize.query(`select * from trips_days where tripId= ${tripDays[i].id}
               `, { type: QueryTypes.SELECT });
               tripDays[i]["days"]= days;
+
+      console.log("days------",days)
+
 
       }
 
