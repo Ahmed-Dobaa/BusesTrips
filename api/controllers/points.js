@@ -172,156 +172,189 @@ module.exports = {
      }
   },
 
+  // getSearchTrips: async (request, reply) => {
+  //   let language = request.headers.language;
+  //   let locations = null;
+  //   let trip= [];
+  //    try {
+
+  //      if(request.payload.type === 64){
+  //       let points = await models.sequelize.query(`
+  //       select t.id, t.name, busRouteId, routeName, b.id routeId
+  //       from trips t, buses_locations b
+  //       where t.busRouteId = b.id
+  //       and busRouteId in (select id from buses_locations blp
+  //       where blp.startPoint = ${request.payload.startPoint} and blp.endPoint = ${request.payload.endPoint})
+  //         `, { type: QueryTypes.SELECT });
+
+  //         console.log('points---',points)
+
+  //         for(let i= 0; i < points.length; i++){
+  //           let routePoints = await models.sequelize.query(`SELECT pointId, p.point,p.lat,p.long
+  //                       from buses_locations_points b, points p
+  //                       where bus_location_id= ${points[i].routeId}
+  //                       and b.pointId = p.id
+  //                       and b.deletedAt is null
+  //             `, { type: QueryTypes.SELECT });
+  //             // points[i]['routePoints']= routePoints;
+  //            console.log('Point---',points[i])
+  //            console.log('routePoints---',routePoints)
+
+  //             let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].routeId} and deletedAt is null`, { type: QueryTypes.SELECT });
+  //             points[i]["routePayment"]= routePayment[0];
+
+  //         let days = await models.sequelize.query(`select * from trips_days where tripId= ${points[i].id}
+  //             `, { type: QueryTypes.SELECT });
+  //             // points[i]["days"]= days
+
+  //           for(let j= 0; j < days.length; j++){
+  //             console.log(points[i].name)
+  //             console.log("------------")
+  //             days[j]["name"]= points[i].name;
+  //             days[j]["routeName"]= points[i].routeName;
+  //             days[j]["routePoints"]= routePoints;
+  //             days[j]["routePayment"]= routePayment[0];
+  //             trip.push(days[j])
+  //            }
+  //           console.log(trip)
+  //           console.log("+++++++++++")
+
+  //           }
+  //         //   // days= null;
+  //         // //   let routePoints = await models.sequelize.query(`SELECT pointId, p.point
+  //         // //   from buses_locations_points b, points p
+  //         // //   where bus_location_id= ${points[i].routeId}
+  //         // //   and b.pointId = p.id
+  //         // //   and b.deletedAt is null
+  //         // // `, { type: QueryTypes.SELECT });
+  //         // // trip.push
+  //         // }
+  //       // for(let i= 0; i < points.length; i++){
+
+  //       // }
+  //       console.log("points from payload.type === 64 " , trip);
+
+  //         return responseService.OK(reply, {value: trip, message: "Found trips" });
+  //      }
+
+  //      if(request.payload.type === 65){
+  //       const child= await models.childs.findOne({ where: { id: request.payload.child}});
+  //             let points = await models.sequelize.query(`
+  //             SELECT t2.name, st.tripId, bl.routeName, bl.id routeId, b2.busPlateNumber, b2.busSeatsNumber,
+  //             (select lookupDetailName from lookup_details l where l.id= b2.seatsStructure) seatsStructure
+  //             FROM single_trips st, trips t2, buses_locations bl, buses b2
+  //             where st.tripId = t2.id
+  //             and t2.busRouteId = bl.id
+  //             and st.busId = b2.id
+  //             and ( bl.startPoint = ${child.school} or bl.endPoint = ${child.school})
+  //             and st.deletedAt is null
+  //         `, { type: QueryTypes.SELECT });
+  //         console.log(points)
+  //       for(let i= 0; i < points.length; i++){
+  //         let route = await models.sequelize.query(`
+  //         SELECT pointId, p.point,p.lat,p.long
+  //         from buses_locations_points b, points p
+  //         where bus_location_id= ${points[i].routeId}
+  //         and b.pointId = p.id
+  //         and b.deletedAt is null
+  //     `, { type: QueryTypes.SELECT });
+
+  //        let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].routeId} and deletedAt is null`, { type: QueryTypes.SELECT });
+
+  //          points[i]["routePoints"]= route;
+  //          points[i]["routePayment"]= routePayment[0];
+  //       }
+
+  //       console.log("points from payload.type === 65" , points);
+
+  //         return responseService.OK(reply, {value: points, message: "Found trips" });
+
+  //      }
+
+  //      if(request.payload.type === 66 && request.payload.subsciptionType === 67){
+  //       let points = await models.sequelize.query(` select s.id, (select name from trips t where t.id = tripId) name,
+  //       (select busSeatsNumber from buses b where b.id= busId) busSeatsNumber,bl.routeName, bl.id routeId,
+  //       (select lookupDetailName from lookup_details where id = (select seatsStructure from
+  //         buses where id = busId)) seatsStructure,
+  //         (select busPlateNumber from buses b where b.id= busId) busPlateNumber
+  //           from single_trips s , trips t2, buses_locations bl
+  //           where date like '%${request.payload.startDate}%'
+  //           and tripId in (select id from trips where busRouteId in (select id from buses_locations where startPoint= ${request.payload.startPoint}
+  //             and endPoint= ${request.payload.endPoint} )) and t2.busRouteId = bl.id
+  //           and s.deletedAt is null
+  //         `, { type: QueryTypes.SELECT });
+
+  //         for(let i= 0; i < points.length; i++){
+  
+  //          let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].routeId} and deletedAt is null`, { type: QueryTypes.SELECT });
+  //            points[i]["routePayment"]= routePayment[0];
+  //         }
+  //         console.log("points from payload.type === 66 and payload.subsciptionType === 67" , points);
+
+  //         return responseService.OK(reply, {value: points, message: "Found university trips" });
+  //      }
+
+  //      if(request.payload.type === 66 && request.payload.subsciptionType === 68){
+  //       let points = await models.sequelize.query(`select id, routeName, companyId
+  //           from buses_locations
+  //           where id in(select bus_location_id from buses_locations_points where pointId= ${request.payload.endPoint})
+  //           and deletedAt is null
+  //         `, { type: QueryTypes.SELECT });
+  //         for(let i= 0; i < points.length; i++){
+  //           let route = await models.sequelize.query(`
+  //           SELECT pointId, p.point,p.lat,p.long
+  //           from buses_locations_points b, points p
+  //           where bus_location_id= ${points[i].id}
+  //           and b.pointId = p.id
+  //           and b.deletedAt is null
+  //             `, { type: QueryTypes.SELECT });
+  //             console.log('points uni sub ',points);
+  //           let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].id} and deletedAt is null`, { type: QueryTypes.SELECT });
+  //            points[i]["routePayment"]= routePayment[0];
+  //            points[i]["routePoints"]= route;
+  //         }
+  //         console.log("points from payload.type === 66 and payload.subsciptionType === 68" , points);
+  //         return responseService.OK(reply, {value: points, message: "Found university routes" });
+  //      }
+  //    } catch (e) {
+  //     console.log(e)
+  //     return responseService.InternalServerError(reply, e);
+  //    }
+  // },
+
   getSearchTrips: async (request, reply) => {
     let language = request.headers.language;
     let locations = null;
-    let trip= [];
-     try {
+    let trip = [];
+    try {
 
-       if(request.payload.type === 64){
-        let points = await models.sequelize.query(`
-        select t.id, t.name, busRouteId, routeName, b.id routeId
-        from trips t, buses_locations b
-        where t.busRouteId = b.id
-        and busRouteId in (select id from buses_locations blp
-        where blp.startPoint = ${request.payload.startPoint} and blp.endPoint = ${request.payload.endPoint})
+      let tripDays = await models.sequelize.query(`
+          SELECT * from allenap_bus.trips_days
+          where day = '${request.payload.day}'
+          and tripId in (SELECT id from allenap_bus.trips where busRouteId in 
+                          (SELECT id from allenap_bus.buses_locations where startPoint =${request.payload.startPoint} and endPoint =${request.payload.endPoint} ) )
           `, { type: QueryTypes.SELECT });
 
-          console.log('points---',points)
-
-          for(let i= 0; i < points.length; i++){
-            let routePoints = await models.sequelize.query(`SELECT pointId, p.point,p.lat,p.long
-                        from buses_locations_points b, points p
-                        where bus_location_id= ${points[i].routeId}
-                        and b.pointId = p.id
-                        and b.deletedAt is null
-              `, { type: QueryTypes.SELECT });
-              // points[i]['routePoints']= routePoints;
-             console.log('Point---',points[i])
-             console.log('routePoints---',routePoints)
-
-              let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].routeId} and deletedAt is null`, { type: QueryTypes.SELECT });
-              points[i]["routePayment"]= routePayment[0];
-
-          let days = await models.sequelize.query(`select * from trips_days where tripId= ${points[i].id}
-              `, { type: QueryTypes.SELECT });
-              // points[i]["days"]= days
-
-            for(let j= 0; j < days.length; j++){
-              console.log(points[i].name)
-              console.log("------------")
-              days[j]["name"]= points[i].name;
-              days[j]["routeName"]= points[i].routeName;
-              days[j]["routePoints"]= routePoints;
-              days[j]["routePayment"]= routePayment[0];
-              trip.push(days[j])
-             }
-            console.log(trip)
-            console.log("+++++++++++")
-
-            }
-          //   // days= null;
-          // //   let routePoints = await models.sequelize.query(`SELECT pointId, p.point
-          // //   from buses_locations_points b, points p
-          // //   where bus_location_id= ${points[i].routeId}
-          // //   and b.pointId = p.id
-          // //   and b.deletedAt is null
-          // // `, { type: QueryTypes.SELECT });
-          // // trip.push
-          // }
-        // for(let i= 0; i < points.length; i++){
-
-        // }
-        console.log("points from payload.type === 64 " , trip);
-
-          return responseService.OK(reply, {value: trip, message: "Found trips" });
-       }
-
-       if(request.payload.type === 65){
-        const child= await models.childs.findOne({ where: { id: request.payload.child}});
-              let points = await models.sequelize.query(`
-              SELECT t2.name, st.tripId, bl.routeName, bl.id routeId, b2.busPlateNumber, b2.busSeatsNumber,
-              (select lookupDetailName from lookup_details l where l.id= b2.seatsStructure) seatsStructure
-              FROM single_trips st, trips t2, buses_locations bl, buses b2
-              where st.tripId = t2.id
-              and t2.busRouteId = bl.id
-              and st.busId = b2.id
-              and ( bl.startPoint = ${child.school} or bl.endPoint = ${child.school})
-              and st.deletedAt is null
+      if (tripDays.length == 0) {
+        tripDays = await models.sequelize.query(`
+             SELECT * from allenap_bus.trips_days
+             where day = '${request.payload.day}' 
+             and tripId in (SELECT id from allenap_bus.trips where busRouteId in 
+                             (SELECT a.bus_location_id
+             FROM allenap_bus.buses_locations_points a
+             JOIN allenap_bus.buses_locations_points b ON a.bus_location_id = b.bus_location_id
+             WHERE a.pointId = ${request.payload.startPoint} AND b.pointId = ${request.payload.endPoint} ) )             
           `, { type: QueryTypes.SELECT });
-          console.log(points)
-        for(let i= 0; i < points.length; i++){
-          let route = await models.sequelize.query(`
-          SELECT pointId, p.point,p.lat,p.long
-          from buses_locations_points b, points p
-          where bus_location_id= ${points[i].routeId}
-          and b.pointId = p.id
-          and b.deletedAt is null
-      `, { type: QueryTypes.SELECT });
+      }
 
-         let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].routeId} and deletedAt is null`, { type: QueryTypes.SELECT });
+      return responseService.OK(reply, { value: trip, message: "Found trips" });
 
-           points[i]["routePoints"]= route;
-           points[i]["routePayment"]= routePayment[0];
-        }
-
-        console.log("points from payload.type === 65" , points);
-
-          return responseService.OK(reply, {value: points, message: "Found trips" });
-
-       }
-
-       if(request.payload.type === 66 && request.payload.subsciptionType === 67){
-        let points = await models.sequelize.query(` select s.id, (select name from trips t where t.id = tripId) name,
-        (select busSeatsNumber from buses b where b.id= busId) busSeatsNumber,bl.routeName, bl.id routeId,
-        (select lookupDetailName from lookup_details where id = (select seatsStructure from
-          buses where id = busId)) seatsStructure,
-          (select busPlateNumber from buses b where b.id= busId) busPlateNumber
-            from single_trips s , trips t2, buses_locations bl
-            where date like '%${request.payload.startDate}%'
-            and tripId in (select id from trips where busRouteId in (select id from buses_locations where startPoint= ${request.payload.startPoint}
-              and endPoint= ${request.payload.endPoint} )) and t2.busRouteId = bl.id
-            and s.deletedAt is null
-          `, { type: QueryTypes.SELECT });
-
-          for(let i= 0; i < points.length; i++){
-  
-           let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].routeId} and deletedAt is null`, { type: QueryTypes.SELECT });
-             points[i]["routePayment"]= routePayment[0];
-          }
-          console.log("points from payload.type === 66 and payload.subsciptionType === 67" , points);
-
-          return responseService.OK(reply, {value: points, message: "Found university trips" });
-       }
-
-       if(request.payload.type === 66 && request.payload.subsciptionType === 68){
-        let points = await models.sequelize.query(`select id, routeName, companyId
-            from buses_locations
-            where id in(select bus_location_id from buses_locations_points where pointId= ${request.payload.endPoint})
-            and deletedAt is null
-          `, { type: QueryTypes.SELECT });
-          for(let i= 0; i < points.length; i++){
-            let route = await models.sequelize.query(`
-            SELECT pointId, p.point,p.lat,p.long
-            from buses_locations_points b, points p
-            where bus_location_id= ${points[i].id}
-            and b.pointId = p.id
-            and b.deletedAt is null
-              `, { type: QueryTypes.SELECT });
-              console.log('points uni sub ',points);
-            let routePayment = await models.sequelize.query(`SELECT * from routes_payment WHERE routeId = ${points[i].id} and deletedAt is null`, { type: QueryTypes.SELECT });
-             points[i]["routePayment"]= routePayment[0];
-             points[i]["routePoints"]= route;
-          }
-          console.log("points from payload.type === 66 and payload.subsciptionType === 68" , points);
-          return responseService.OK(reply, {value: points, message: "Found university routes" });
-       }
-     } catch (e) {
+    } catch (e) {
       console.log(e)
       return responseService.InternalServerError(reply, e);
-     }
+    }
   },
-
+  
   reserveDates: async (request, reply) => {
     let transaction;
     let created = null;
