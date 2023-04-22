@@ -353,8 +353,8 @@ module.exports = {
         INNER JOIN buses_locations_points blp2 ON bl.id = blp2.bus_location_id
         WHERE blp1.pointId = ${request.payload.startPoint} AND blp2.pointId = ${request.payload.endPoint}
         OR (bl.startPoint = ${request.payload.startPoint} and blp1.pointId = ${request.payload.endPoint} and blp2.pointId = ${request.payload.endPoint})
-        OR (bl.endPoint = ${request.payload.endPoint} and blp1.pointId = ${request.payload.startPoint} and blp2.pointId = ${request.payload.startPoint}) ) 
-                      )              
+        OR (bl.endPoint = ${request.payload.endPoint} and blp1.pointId = ${request.payload.startPoint} and blp2.pointId = ${request.payload.startPoint}) 
+        OR (bl.startPoint = ${request.payload.startPoint} and bl.endPoint = ${request.payload.endPoint}) ))              
           `, { type: QueryTypes.SELECT });
       // }
 
