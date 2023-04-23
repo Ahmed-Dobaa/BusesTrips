@@ -339,7 +339,7 @@ module.exports = {
 
       // if (tripDays.length == 0) {
       let tripDays = await models.sequelize.query(`
-        SELECT id, day, tripId, td.from as fromH, td.to as toH, (select name from trips t where t.id = td.tripId) tripName,
+        SELECT id, day, tripId,td.count as count td.from as fromH, td.to as toH, (select name from trips t where t.id = td.tripId) tripName,
         (SELECT routeName from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) routName, (SELECT id from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) routeId,
         (SELECT startPoint from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) startsPoint,
           (SELECT endPoint from buses_locations where id = (SELECT busRouteId from trips t where t.id = td.tripId) ) endsPoint
