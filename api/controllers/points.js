@@ -385,8 +385,16 @@ module.exports = {
 
              console.log("routePayment------",routePayment)
 
-        let buses =  await models.sequelize.query(`SELECT * FROM buses b WHERE b.id = (SELECT busId from single_trips WHERE tripId = ${tripDays[i].tripId} AND date = ${request.payload.startDate})`)
+          let buses = [];
+
+        let bus =  await models.sequelize.query(`SELECT * FROM buses b WHERE b.id = (SELECT busId from single_trips WHERE tripId = ${tripDays[i].tripId} AND date = ${request.payload.startDate})`)
         
+        console.log("buses------",bus)
+
+        if(bus.id){
+          buses.push(bus);
+        }
+
         console.log("buses------",buses)
 
         for (let index = 0; index < buses.length; index++) {
