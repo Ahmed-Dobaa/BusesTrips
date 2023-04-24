@@ -385,8 +385,23 @@ module.exports = {
 
              console.log("routePayment------",routePayment)
 
+        let buses =  await models.sequelize.query(`SELECT * FROM buses b WHERE b.id = (SELECT busId from single_trips WHERE tripId = ${tripDays[i].tripId} AND date = ${request.payload.startDate})`)
+        
 
-          let days = await models.sequelize.query(`select * from trips_days where tripId= ${tripDays[i].tripId}
+        for (let index = 0; index < buses.length; index++) {
+        
+          let driver =  await models.sequelize.query(`SELECT * FROM companies_staff WHERE id = ${buses[index].driverId} and deletedAt is null`)
+         buses[index]['driver'] = driver;
+
+         let supervisor =  await models.sequelize.query(`SELECT * FROM companies_staff WHERE id = ${buses[index].supervisorId} and deletedAt is null`)
+         buses[index]['supervisor'] = supervisor;
+        }
+
+        tripDays[i]["buses"]= buses;
+        console.log("buses------",buses)
+
+         
+        let days = await models.sequelize.query(`select * from trips_days where tripId= ${tripDays[i].tripId}
               `, { type: QueryTypes.SELECT });
               tripDays[i]["days"]= days;
 
