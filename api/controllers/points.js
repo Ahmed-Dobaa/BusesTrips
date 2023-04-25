@@ -388,24 +388,20 @@ module.exports = {
              console.log("routePayment------",routePayment)
 
 
-        let bus =  await models.sequelize.query(`SELECT * FROM buses b WHERE b.id = (SELECT busId from single_trips WHERE tripId = ${tripDays[i].id} AND Date(date) = '${request.payload.startDate}')`)
+        let buses =  await models.sequelize.query(`SELECT * FROM buses b WHERE b.id = (SELECT busId from single_trips WHERE tripId = ${tripDays[i].id} AND Date(date) = '${request.payload.startDate}')`)
         
-        console.log("buses db------",bus)
-        console.log("buses------",bus[0].TextRow)
-
-        if(bus[0].TextRow.id){
-          buses.push(bus[0]);
-        }
+        tripDays[i]['buses'] = buses
+    
 
         console.log("buses------",buses)
 
-        for (let index = 0; index < buses.length; index++) {
+        for (let index = 0; index <  tripDays[i]['buses'].length; index++) {
         
-          let driver =  await models.sequelize.query(`SELECT * FROM companies_staff WHERE id = ${buses[index].driverId} and deletedAt is null`)
-         buses[index]['driver'] = driver;
+          let driver =  await models.sequelize.query(`SELECT * FROM companies_staff WHERE id = ${tripDays[i]['buses'][index].driverId} and deletedAt is null`)
+          tripDays[i]['buses'][index]['driver'] = driver;
 
-         let supervisor =  await models.sequelize.query(`SELECT * FROM companies_staff WHERE id = ${buses[index].supervisorId} and deletedAt is null`)
-         buses[index]['supervisor'] = supervisor;
+         let supervisor =  await models.sequelize.query(`SELECT * FROM companies_staff WHERE id = ${tripDays[i]['buses'][index].supervisorId} and deletedAt is null`)
+         tripDays[i]['buses'][index]['supervisor'] = supervisor;
         }
 
         tripDays[i]["buses"]= buses;
