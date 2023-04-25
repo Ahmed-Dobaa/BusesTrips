@@ -358,7 +358,6 @@ module.exports = {
           `, { type: QueryTypes.SELECT });
       // }
 
-      let buses = [];
 
       console.log("tripDays------",tripDays)
       for(let i = 0 ; i < tripDays.length; i++){
@@ -390,7 +389,7 @@ module.exports = {
 
         let buses =  await models.sequelize.query(`SELECT * FROM buses b WHERE b.id = (SELECT busId from single_trips WHERE tripId = ${tripDays[i].id} AND Date(date) = '${request.payload.startDate}')`)
         
-        tripDays[i]['buses'] = buses
+        tripDays[i]['buses'] = buses[0]
     
 
         console.log("buses------",buses)
