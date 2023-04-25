@@ -389,10 +389,10 @@ module.exports = {
 
         let bus =  await models.sequelize.query(`SELECT * FROM buses b WHERE b.id = (SELECT busId from single_trips WHERE tripId = ${tripDays[i].tripId} AND Date(date) = ${request.payload.startDate})`)
         
-        console.log("buses------",bus)
+        console.log("buses------",bus[0])
 
-        if(bus.id){
-          buses.push(bus);
+        if(bus[0].id){
+          buses.push(bus[0]);
         }
 
         console.log("buses------",buses)
