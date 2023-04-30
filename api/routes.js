@@ -41,6 +41,7 @@ const usersSettingsSchema = require('./schemas/mobile/usersSettings');
 
 const webLoginSchema = require('./schemas/web/login');
 const paymentController = require('./controllers/paymentController');
+const studentDatesController = require('./controllers/studentDates.Controller');
 
 module.exports = [
   {
@@ -476,6 +477,26 @@ module.exports = [
       auth: false,
       // validate: companySchema.createCompany,
       handler: pointsController.reservation
+    }
+  },
+  {
+    path: '/api/createStudentDates',
+    method: 'POST',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Create new student dates',
+      auth: false,
+      handler: studentDatesController.createStudentDates
+    }
+  },
+  {
+    path: '/api/getStudentDates',
+    method: 'GET',
+    options: {
+      payload: { allow: ['application/json'], },
+      description: 'Get student dates',
+      auth: false,
+      handler: studentDatesController.getStudentDates
     }
   },
   {
