@@ -490,7 +490,7 @@ module.exports = [
     }
   },
   {
-    path: '/api/getStudentDates',
+    path: '/api/getStudentDates/{studentId}',
     method: 'GET',
     options: {
       description: 'Get student dates',
