@@ -493,7 +493,6 @@ module.exports = [
     path: '/api/getStudentDates',
     method: 'GET',
     options: {
-      payload: { allow: ['application/json'], },
       description: 'Get student dates',
       auth: false,
       handler: studentDatesController.getStudentDates

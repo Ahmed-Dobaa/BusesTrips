@@ -40,5 +40,5 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true,
     }
   }, { tableName: 'student_dates', paranoid: true });
-  return companies;
+  return student_dates;
 };
