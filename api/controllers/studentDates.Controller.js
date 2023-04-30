@@ -15,11 +15,14 @@ module.exports = {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
 
-        if(payload.id === null){
-         await models.student_dates.create(payload, {transaction});
-       }else{
-         await models.student_dates.update(payload, {where: {id: payload.id }}, {transaction});
-       }
+        payload.forEach(async day => {
+            if(day.id === null){
+             await models.student_dates.create(payload, {transaction});
+           }else{
+             await models.student_dates.update(payload, {where: {id: payload.id }}, {transaction});
+           }
+            
+        });
 
       await transaction.commit();
       return responseService.OK(reply, { value: payload, message: 'Student dates updated successfully' });
