@@ -14,17 +14,14 @@ module.exports = {
     try {
       transaction = await models.sequelize.transaction();
       const { payload } = request;
-    
-      for (let i = 0; i < payload.length; i++) {
-        const day = payload[i];
-        if(day.id === null){
-            await models.student_dates.create(payload, {transaction});
-          }else{
-            await models.student_dates.update(payload, {where: {id: payload.id }}, {transaction});
-          }
-      }
-        await transaction.commit();
 
+        if(payload.id === null){
+         await models.student_dates.create(payload, {transaction});
+       }else{
+         await models.student_dates.update(payload, {where: {id: payload.id }}, {transaction});
+       }
+
+      await transaction.commit();
       return responseService.OK(reply, { value: payload, message: 'Student dates updated successfully' });
     }
     catch (e) {
