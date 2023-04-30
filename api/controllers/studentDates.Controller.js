@@ -21,10 +21,10 @@ module.exports = {
            }else{
              await models.student_dates.update(payload, {where: {id: payload.id }}, {transaction});
            }
+           await transaction.commit();
             
         });
 
-      await transaction.commit();
       return responseService.OK(reply, { value: payload, message: 'Student dates updated successfully' });
     }
     catch (e) {
